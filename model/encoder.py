@@ -1,14 +1,10 @@
-import torch
-import torch.nn.functional as F
-import matplotlib.pyplot as plt
-
 from torch import nn
-from torch import Tensor
-from PIL import Image
-from torchvision.transforms import Compose, Resize, ToTensor
-from einops import rearrange, reduce, repeat
-from einops.layers.torch import Rearrange, Reduce
-from torchsummary import summary
+
+from model_utils import ResidualAdd, MultiHeadAttention, FeedForwardBlock
+
+class TransformerEncoder(nn.Sequential):
+    def __init__(self, depth: int = 12, **kwargs):
+        super().__init__(*[TransformerEncoderBlock(**kwargs) for _ in range(depth)])
 
 class TransformerEncoderBlock(nn.Sequential):
     def __init__(self,

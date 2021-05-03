@@ -1,3 +1,8 @@
+from torch import nn
+
+from model_utils import PatchEmbedding
+from encoder import TransformerEncoder
+
 class ViT(nn.Sequential):
     def __init__(self,     
                 in_channels: int = 3,
@@ -9,6 +14,8 @@ class ViT(nn.Sequential):
                 **kwargs):
         super().__init__(
             PatchEmbedding(in_channels, patch_size, emb_size, img_size),
-            TransformerEncoder(depth, emb_size=emb_size, **kwargs),
-            ClassificationHead(emb_size, n_classes)
+            TransformerEncoder(depth, emb_size=emb_size, **kwargs)
         )
+
+# patches_embedded = PatchEmbedding()(x)
+# TransformerEncoderBlock()(patches_embedded).shape
