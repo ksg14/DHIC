@@ -2,7 +2,7 @@ from tqdm import tqdm
 import json
 import os
 
-from .config import Config
+from config import Config
 
 def get_image_count (captions, images_path):
 	count = 0
