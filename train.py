@@ -33,6 +33,8 @@ if __name__ == '__main__':
 
 	for image, caption, target, target_seq_len in train_dataloader:
 		print (f'image - {type (image)}')
+		print (f'image len - {len (image)}')
+		print (f'image [0] type - {type (image [0])}')
 		print (f'caption - {caption.shape}')
 		print (f'target - {target.shape}')
 		print (f'target_seq_len - {target_seq_len.shape}')
