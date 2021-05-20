@@ -31,7 +31,7 @@ def update_stats (caption, stats):
 
 	stats ['maxlen'] = max (stats ['maxlen'], n_tokens)
 	for key in stats.keys ():
-		if key == 'max_len':
+		if key == 'maxlen':
 			continue
 		if check_in_range (key, n_tokens):
 			stats [key] += 1
