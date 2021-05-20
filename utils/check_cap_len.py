@@ -6,6 +6,7 @@ import json
 from os import stat
 from typing import List
 from tqdm import tqdm
+import argparse
 
 from config import Config
 
@@ -67,17 +68,7 @@ def check_len_stats (captions : List) -> None:
 	print (stats)
 	return
 
-
-if __name__ == '__main__':
-	config = Config ()
-
-	with open (config.train_captions, 'r') as file_io:
-		train_captions = json.load (file_io)
-	with open (config.val_captions, 'r') as file_io:
-		val_captions = json.load (file_io)
-	with open (config.test_captions, 'r') as file_io:
-		test_captions = json.load (file_io)
-
+def run_stats_code (train_captions, val_captions, test_captions):
 	print ('Train captions stats - ')
 	check_len_stats (train_captions ['annotations'])
 
@@ -86,3 +77,43 @@ if __name__ == '__main__':
 
 	print ('Test captions stats - ')
 	check_len_stats (test_captions ['annotations'])
+	return
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser(description='Get caption len stats')
+	parser.add_argument('-r',
+                       '--raw',
+                       action='store_true',
+                       help='get raw caption stats')
+	parser.add_argument('-c',
+                       '--clean',
+                       action='store_false',
+                       help='get raw caption stats')
+
+	args = parser.parse_args()
+
+	config = Config ()
+
+	if args.raw:
+		print ('Stats for raw dataset captions ...')
+		with open (config.train_captions, 'r') as file_io:
+			train_captions = json.load (file_io)
+		with open (config.val_captions, 'r') as file_io:
+			val_captions = json.load (file_io)
+		with open (config.test_captions, 'r') as file_io:
+			test_captions = json.load (file_io)
+
+		run_stats_code (train_captions, val_captions, test_captions)
+	
+	if args.clean:
+		print ('Stats for clean dataset captions ...')
+		with open (config.clean_train, 'r') as file_io:
+			train_captions = json.load (file_io)
+		with open (config.clean_val, 'r') as file_io:
+			val_captions = json.load (file_io)
+		with open (config.clean_test, 'r') as file_io:
+			test_captions = json.load (file_io)
+
+		run_stats_code (train_captions, val_captions, test_captions)
+	
+	
