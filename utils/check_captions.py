@@ -25,7 +25,7 @@ def has_english_char (text : str) -> bool:
 	return False
 
 def clean_captions (captions : List) -> List:
-	clean_captions = []
+	clean_captions = { 'annotations' : [] }
 	for img in tqdm (captions):
 		sentences=sentence_tokenize.sentence_split(img ['caption'], lang='hi')
 
@@ -44,7 +44,7 @@ def clean_captions (captions : List) -> List:
 			# else:
 			# 	print ('not added')
 
-		clean_captions.append ({
+		clean_captions ['annotations'].append ({
 			'image_id' : img ['image_id'],
 			'caption' : ' '.join (final_sentences)
 		})
@@ -60,13 +60,10 @@ if __name__ == '__main__':
 	with open (config.test_captions, 'r') as file_io:
 		test_captions = json.load (file_io)
 
-	print ('Train captions stats - ')
 	clean_train = clean_captions (train_captions ['annotations'])
 
-	print ('Val captions stats - ')
 	clean_val = clean_captions (val_captions ['annotations'])
 
-	print ('Test captions stats - ')
 	clean_test = clean_captions (test_captions ['annotations'])
 
 	with open (config.clean_train, 'w') as file_io:
