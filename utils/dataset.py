@@ -36,7 +36,7 @@ class HVGDataset (Dataset):
 		image_file = os.path.join (self.images_path, f'{image_id}.jpg')
 		image = Image.open (image_file)
 		if self.image_transform:
-			image = self.image_transform (image)
+			image = self.image_transform (image).squeeze () # (1, C, H, W) -> (C, H, W)
 
 		# Target Caption
 		if self.text_transform:
