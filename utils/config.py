@@ -20,6 +20,9 @@ class Config ():
     train_captions = captions_path / 'para_captions_train.json'
     val_captions = captions_path / 'para_captions_val.json'
     test_captions = captions_path / 'para_captions_test.json'
+    clean_train = data_path / 'clean_train.json'
+    clean_val = data_path / 'clean_val.json'
+    clean_test = data_path / 'clean_test.json'
     images_path = Path ('../VG/images')
 
     def save_config (self):
