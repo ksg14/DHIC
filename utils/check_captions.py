@@ -16,7 +16,7 @@ from indicnlp.tokenize import sentence_tokenize
 from indicnlp.tokenize import indic_tokenize  
 
 def has_english_char (text : str) -> bool:
-	for char in range (len (text)):			
+	for char in text:			
 		if char.isalpha ():
 			return True
 	return False
