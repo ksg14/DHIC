@@ -12,13 +12,16 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 from utils.dataset import HVGDataset
+from utils.custom_transform import ToSequence
 
 from utils.config import Config
 
 if __name__ == '__main__':
 	config = Config ()
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=indic_tokenize.trivial_tokenize)
+	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
+
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
 
 	for _, (image, caption, target, target_seq_len) in enumerate (train_dataloader):
