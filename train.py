@@ -23,9 +23,9 @@ if __name__ == '__main__':
 	config = Config ()
 
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
-	# image_transform = T.Compose ([T.ToTensor()])
+	image_transform = T.Compose ([T.ToTensor()])
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform, image_transform=None)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
 
 	feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
@@ -35,6 +35,7 @@ if __name__ == '__main__':
 		print (f'image - {type (image)}')
 		print (f'image len - {len (image)}')
 		print (f'image [0] type - {type (image [0])}')
+		print (f'image [0] shape - {image [0].shape}')
 		print (f'caption - {caption.shape}')
 		print (f'target - {target.shape}')
 		print (f'target_seq_len - {target_seq_len.shape}')
