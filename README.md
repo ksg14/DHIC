@@ -3,11 +3,14 @@ Dense Hindi Image Captioning
 
 ## Packages :
 1. indic-nlp-library : 
-
 ```
-pip install indic-nlp-library
+pip install indic-nlp-library	
 git clone https://github.com/anoopkunchukuttan/indic_nlp_resources.git
 git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
+```
+2. transformers :
+```
+pip install transformers
 ```
 
 ## Training Data :
