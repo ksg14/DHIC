@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List
 import torch
 
 def prepare_sequence (seq : str, to_ix : dict, tokenizer : Callable) -> torch.Tensor:

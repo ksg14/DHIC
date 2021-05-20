@@ -1,7 +1,9 @@
 from pathlib import Path
 from typing import Callable, Tuple
+
 import torch
 from torch.utils.data import Dataset, DataLoader
+import torch.nn.functional as F
 
 from PIL import Image
 # import cv2
@@ -11,7 +13,7 @@ import numpy as np
 import json
 
 class HVGDataset (Dataset):
-	def __init__ (self, captions_file : Path, word_to_index_file : Path, index_to_word_file : Path, images_path : Path, text_transform : Callable=None, image_transform : Callable=None) -> None:
+	def __init__ (self, captions_file : Path, word_to_index_file : Path, index_to_word_file : Path, images_path : Path, max_len : int, text_transform : Callable=None, image_transform : Callable=None) -> None:
 		with open (captions_file, 'r') as file_io:
 			self.captions = json.load (file_io)
 		
@@ -21,6 +23,7 @@ class HVGDataset (Dataset):
 		with open (index_to_word_file, 'r') as file_io:
 			self.index_to_word = json.load (file_io)
 		
+		self.max_len = max_len
 		self.images_path = images_path
 		self.text_transform = text_transform
 		self.image_transform = image_transform
@@ -33,10 +36,11 @@ class HVGDataset (Dataset):
 		caption_str = self.captions ['annotations'] [idx] ['caption']
 
 		# Image
-		image_file = os.path.join (self.images_path, f'{image_id}.jpg')
+		# image_file = os.path.join (self.images_path, f'{image_id}.jpg')
+		image_file = os.path.join (self.images_path, f'16.jpg')
 		image = Image.open (image_file)
 		if self.image_transform:
-			image = self.image_transform (image).squeeze () # (1, C, H, W) -> (C, H, W)
+			image = self.image_transform (image)
 
 		# Target Caption
 		if self.text_transform:
@@ -45,9 +49,12 @@ class HVGDataset (Dataset):
 		if self.text_transform:
 			target = self.text_transform (f"{caption_str} end", self.word_to_index)
 
-		target_seq_len = target.shape [0]	  
+		target_seq_len = target.shape [0]
+
+		caption = F.pad (caption, pad=(0, self.max_len-target_seq_len))
+		target = F.pad (target, pad=(0, self.max_len-target_seq_len))
 		
-		return [image], caption, target, target_seq_len
+		return image, caption, target, target_seq_len
 
 # if __name__ == '__main__':
 #	 train_dataset = HVGDataset ()

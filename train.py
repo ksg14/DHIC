@@ -22,28 +22,38 @@ from utils.config import Config
 if __name__ == '__main__':
 	config = Config ()
 
+	batch_size=2
+
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
-	image_transform = T.Compose ([T.ToTensor()])
+	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform, image_transform=image_transform)
-	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, 'data/images/', 464, text_transform=text_transform, image_transform=image_transform)
+	train_dataloader = DataLoader (train_dataset, batch_size=2, shuffle=False)
 
-	feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
-	model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
+	# feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
+	# model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
 
 	for image, caption, target, target_seq_len in train_dataloader:
-		print (f'image - {type (image)}')
-		print (f'image len - {len (image)}')
-		print (f'image [0] type - {type (image [0])}')
-		print (f'image [0] shape - {image [0].shape}')
+		print (f'image shape - {image.shape}')
 		print (f'caption - {caption.shape}')
 		print (f'target - {target.shape}')
-		print (f'target_seq_len - {target_seq_len.shape}')
+		print (f'target_seq_len shape- {target_seq_len.shape}')
+		print (f'target_seq_len - {target_seq_len}')
 
-		inputs = feature_extractor(images=image, return_tensors="pt")
-		outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
-		last_hidden_states = outputs.last_hidden_state
+		print (f'image[0].shape {image [0].shape}')
 
-		print (f'output shape - {last_hidden_states.shape}')
+		print (f'max - {image.max ()}')
+		print (f'min - {image.min ()}')
+
+		images_list = [image [i] for i in range (batch_size)]
+		print (type (images_list))
+		print (type (images_list [0]))
+		print (images_list [0].shape)
+		break
+		# inputs = feature_extractor(images=image, return_tensors="pt")
+		# outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
+		# last_hidden_states = outputs.last_hidden_state
+
+		# print (f'output shape - {last_hidden_states.shape}')
 		break
 	

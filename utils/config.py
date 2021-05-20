@@ -2,6 +2,8 @@ from pathlib import Path
 import json
 import os
 
+from torch._C import set_flush_denormal
+
 class Config ():
     def __init__ (self, config_path=None) -> None:
         if config_path:
@@ -32,6 +34,8 @@ class Config ():
     images_path = Path ('../VG/images')
     word_to_index_path = data_path / 'word_to_index.json'
     index_to_word_path = data_path / 'index_to_word.json'
+
+    max_len = 464
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]
