@@ -27,10 +27,10 @@ if __name__ == '__main__':
 	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
 
 	for _, (image, caption, target, target_seq_len) in enumerate (train_dataloader):
-		print (f'image - {image}.shape')
-		print (f'caption - {caption}.shape')
-		print (f'target - {target}.shape')
-		print (f'target_seq_len - {len (target_seq_len)}, target [0] - {len (target_seq_len [0])}')
+		print (f'image - {image.shape}')
+		print (f'caption - {caption.shape}')
+		print (f'target - {target.shape}')
+		print (f'target_seq_len - {target_seq_len.shape}')
 
 		break
 	
