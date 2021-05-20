@@ -70,13 +70,13 @@ def check_len_stats (captions : List) -> None:
 
 def run_stats_code (train_captions, val_captions, test_captions):
 	print ('Train captions stats - ')
-	check_len_stats (train_captions ['annotations'])
+	check_len_stats (train_captions)
 
 	print ('Val captions stats - ')
-	check_len_stats (val_captions ['annotations'])
+	check_len_stats (val_captions)
 
 	print ('Test captions stats - ')
-	check_len_stats (test_captions ['annotations'])
+	check_len_stats (test_captions)
 	return
 
 if __name__ == '__main__':
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 		with open (config.test_captions, 'r') as file_io:
 			test_captions = json.load (file_io)
 
-		run_stats_code (train_captions, val_captions, test_captions)
+		run_stats_code (train_captions ['annotations'], val_captions ['annotations'], test_captions ['annotations'])
 	
 	if args.clean:
 		print ('Stats for clean dataset captions ...')
