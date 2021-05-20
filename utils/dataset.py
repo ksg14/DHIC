@@ -39,10 +39,10 @@ class HVGDataset (Dataset):
 
 		# Target Caption
 		if self.text_transform:
-			caption = self.text_transform (f"<start> {caption_str}", self.word_to_index)
+			caption = self.text_transform (f"start {caption_str}", self.word_to_index)
 		
 		if self.text_transform:
-			target = self.text_transform (f"{caption_str} <end>", self.word_to_index)
+			target = self.text_transform (f"{caption_str} end", self.word_to_index)
 
 		target_seq_len = target.shape [0]	  
 		

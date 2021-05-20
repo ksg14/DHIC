@@ -19,14 +19,14 @@ def get_vocab (corpus : List) -> Tuple:
 	word_to_index = dict ()
 	index_to_word = dict ()
 	
-	word_to_index ['<pad>'] = 0
-	word_to_index ['<start>'] = 1
-	word_to_index ['<end>'] = 2
-	word_to_index ['<unk>'] = 3
-	index_to_word [0] = '<pad>'
-	index_to_word [1] = '<start>'
-	index_to_word [2] = '<end>'
-	index_to_word [3] = '<unk>'
+	word_to_index ['pad'] = 0
+	word_to_index ['start'] = 1
+	word_to_index ['end'] = 2
+	word_to_index ['unk'] = 3
+	index_to_word [0] = 'pad'
+	index_to_word [1] = 'start'
+	index_to_word [2] = 'end'
+	index_to_word [3] = 'unk'
 	start_idx = 4
 
 	for img in tqdm (corpus):
