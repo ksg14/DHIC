@@ -87,7 +87,7 @@ if __name__ == '__main__':
                        help='get raw caption stats')
 	parser.add_argument('-c',
                        '--clean',
-                       action='store_false',
+                       action='store_true',
                        help='get raw caption stats')
 
 	args = parser.parse_args()
