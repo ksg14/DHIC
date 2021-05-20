@@ -20,7 +20,7 @@ class Config ():
     train_captions = captions_path / 'para_captions_train.json'
     val_captions = captions_path / 'para_captions_val.json'
     test_captions = captions_path / 'para_captions_test.json'
-    images_path = Path ('')
+    images_path = Path ('../VG/images')
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]

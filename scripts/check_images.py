@@ -1,19 +1,15 @@
 import numpy as np
 from tqdm import tqdm
 import json
+import os
 
 from utils.config import Config
 
 def get_image_count (captions, images_path):
 	count = 0
 	for img in tqdm (captions ['annotations']):
-		try:
-			x = np.load (img_path + str (img) + '.npy')
-			# print (x ['feat'].shape)
-		except:
+		if os.path.exists (images_path / f"{img ['image_id']}.jpg"):
 			count += 1
-			missing_list.append (img)
-	print (missing_list)
 	return count
 
 if __name__ == '__main__':
