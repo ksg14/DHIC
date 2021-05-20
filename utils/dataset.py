@@ -3,7 +3,8 @@ from typing import Callable, Tuple
 import torch
 from torch.utils.data import Dataset, DataLoader
 
-from PIL import Image
+# from PIL import Image
+from torchvision.io import read_image
 
 import os
 import numpy as np
@@ -33,7 +34,7 @@ class HVGDataset (Dataset):
 
 		# Image
 		image_file = os.path.join (self.images_path, f'{image_id}.jpg')
-		image = Image.open(image_file)
+		image = read_image (image_file)
 		if self.image_transform:
 			image = self.image_transform (image)
 
