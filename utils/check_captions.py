@@ -56,10 +56,10 @@ if __name__ == '__main__':
 	print ('Test captions stats - ')
 	clean_test = clean_captions (test_captions ['annotations'])
 
-	with open (config.clean_train, 'r') as file_io:
+	with open (config.clean_train, 'w') as file_io:
 		json.dump (clean_train, file_io)
-	with open (config.clean_val, 'r') as file_io:
+	with open (config.clean_val, 'w') as file_io:
 		json.dump (clean_val, file_io)
-	with open (config.clean_test, 'r') as file_io:
+	with open (config.clean_test, 'w') as file_io:
 		json.dump (clean_test, file_io)
 
