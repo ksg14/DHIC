@@ -17,8 +17,12 @@ from indicnlp.tokenize import indic_tokenize
 
 def check_in_range (text_range, key):
 	start, end = text_range.split ('-')
-	if key >= int (start) and key <= int (end):
-		return True
+	if end == 'inf':
+		if key >= int (start):
+			return True
+	else:
+		if key >= int (start) and key <= int (end):
+			return True
 	return False
 
 def update_stats (caption, stats):
@@ -46,7 +50,7 @@ def check_len_stats (captions):
 		'351-400' : 0,
 		'401-450' : 0,
 		'451-500' : 0,
-		'501-' : 0,
+		'501-inf' : 0,
 	}
 	for img in tqdm (captions):
 		update_stats (img ['caption'], stats)
