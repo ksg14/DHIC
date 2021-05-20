@@ -68,15 +68,22 @@ def check_len_stats (captions : List) -> None:
 	print (stats)
 	return
 
-def run_stats_code (train_captions, val_captions, test_captions):
+def run_stats_code (train_captions_file : str, val_captions_file : str, test_captions_file : str) -> None:
+	with open (train_captions_file, 'r') as file_io:
+		train_captions = json.load (file_io)
+	with open (val_captions_file, 'r') as file_io:
+		val_captions = json.load (file_io)
+	with open (test_captions_file, 'r') as file_io:
+		test_captions = json.load (file_io)
+
 	print ('Train captions stats - ')
-	check_len_stats (train_captions)
+	check_len_stats (train_captions ['annotations'])
 
 	print ('Val captions stats - ')
-	check_len_stats (val_captions)
+	check_len_stats (val_captions ['annotations'])
 
 	print ('Test captions stats - ')
-	check_len_stats (test_captions)
+	check_len_stats (test_captions ['annotations'])
 	return
 
 if __name__ == '__main__':
@@ -96,24 +103,16 @@ if __name__ == '__main__':
 
 	if args.raw:
 		print ('Stats for raw dataset captions ...')
-		with open (config.train_captions, 'r') as file_io:
-			train_captions = json.load (file_io)
-		with open (config.val_captions, 'r') as file_io:
-			val_captions = json.load (file_io)
-		with open (config.test_captions, 'r') as file_io:
-			test_captions = json.load (file_io)
+		train_captions_file = config.train_captions
+		val_captions_file = config.val_captions
+		test_captions_file = config.test_captions
+		run_stats_code (train_captions_file, val_captions_file, test_captions_file)
 
-		run_stats_code (train_captions ['annotations'], val_captions ['annotations'], test_captions ['annotations'])
-	
 	if args.clean:
 		print ('Stats for clean dataset captions ...')
-		with open (config.clean_train, 'r') as file_io:
-			train_captions = json.load (file_io)
-		with open (config.clean_val, 'r') as file_io:
-			val_captions = json.load (file_io)
-		with open (config.clean_test, 'r') as file_io:
-			test_captions = json.load (file_io)
-
-		run_stats_code (train_captions, val_captions, test_captions)
+		train_captions_file = config.clean_train
+		val_captions_file = config.clean_val
+		test_captions_file = config.clean_test
+		run_stats_code (train_captions_file, val_captions_file, test_captions_file)
 	
 	
