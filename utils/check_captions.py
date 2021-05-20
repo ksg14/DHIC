@@ -1,5 +1,5 @@
 import json
-from os import stat
+from typing import List
 from tqdm import tqdm
 
 from config import Config
@@ -15,13 +15,13 @@ common.set_resources_path(INDIC_NLP_RESOURCES)
 from indicnlp.tokenize import sentence_tokenize
 from indicnlp.tokenize import indic_tokenize  
 
-def has_english_char (text):
+def has_english_char (text : str) -> bool:
 	for char in range (len (text)):			
 		if char.isalpha ():
-			return False
-	return True
+			return True
+	return False
 
-def clean_captions (captions):
+def clean_captions (captions : List) -> List:
 	clean_captions = []
 	for img in tqdm (captions):
 		sentences=sentence_tokenize.sentence_split(img ['caption'], lang='hi')

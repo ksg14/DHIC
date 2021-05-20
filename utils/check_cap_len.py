@@ -1,5 +1,10 @@
+'''
+Get caption stats : maxlen and length distribution of caption words.
+'''
+
 import json
 from os import stat
+from typing import List
 from tqdm import tqdm
 
 from config import Config
@@ -15,7 +20,11 @@ common.set_resources_path(INDIC_NLP_RESOURCES)
 from indicnlp.tokenize import sentence_tokenize
 from indicnlp.tokenize import indic_tokenize  
 
-def check_in_range (text_range, key):
+def check_in_range (text_range : str, key : int) -> bool :
+	'''
+	params : '0-50', 23
+	output : True if key in range of text_range
+	'''
 	start, end = text_range.split ('-')
 	if end == 'inf':
 		if key >= int (start):
@@ -25,7 +34,7 @@ def check_in_range (text_range, key):
 			return True
 	return False
 
-def update_stats (caption, stats):
+def update_stats (caption : str, stats : dict) -> None:
 	tokens = indic_tokenize.trivial_tokenize(caption)
 	n_tokens = len (tokens)
 
@@ -37,7 +46,7 @@ def update_stats (caption, stats):
 			stats [key] += 1
 	return
 
-def check_len_stats (captions):
+def check_len_stats (captions : List) -> None:
 	stats = {
 		'maxlen' : 0,
 		'0-50' : 0,
