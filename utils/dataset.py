@@ -47,7 +47,7 @@ class HVGDataset (Dataset):
 
 		target_seq_len = target.shape [0]	  
 		
-		return image, caption, target, target_seq_len
+		return [image], caption, target, target_seq_len
 
 # if __name__ == '__main__':
 #	 train_dataset = HVGDataset ()

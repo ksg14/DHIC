@@ -31,8 +31,8 @@ if __name__ == '__main__':
 	feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
 	model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
 
-	for _, (image, caption, target, target_seq_len) in enumerate (train_dataloader):
-		print (f'image - {image.shape}')
+	for image, caption, target, target_seq_len in train_dataloader:
+		print (f'image - {type (image)}')
 		print (f'caption - {caption.shape}')
 		print (f'target - {target.shape}')
 		print (f'target_seq_len - {target_seq_len.shape}')
