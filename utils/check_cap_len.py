@@ -66,10 +66,10 @@ if __name__ == '__main__':
 		test_captions = json.load (file_io)
 
 	print ('Train captions stats - ')
-	check_len_stats (train_captions)
+	check_len_stats (train_captions ['annotations'])
 
 	print ('Val captions stats - ')
-	check_len_stats (val_captions)
+	check_len_stats (val_captions ['annotations'])
 
 	print ('Test captions stats - ')
-	check_len_stats (test_captions)
+	check_len_stats (test_captions ['annotations'])
