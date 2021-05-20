@@ -10,6 +10,7 @@ from indicnlp.tokenize import indic_tokenize
 
 import torch
 from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms as T
 
 from utils.dataset import HVGDataset
 from utils.custom_transform import ToSequence
@@ -20,8 +21,9 @@ if __name__ == '__main__':
 	config = Config ()
 
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
+	image_transform = T.Compose ([T.ToTensor()])
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
 
 	for _, (image, caption, target, target_seq_len) in enumerate (train_dataloader):
