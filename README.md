@@ -6,9 +6,7 @@ Dense Hindi Image Captioning
 
 ```
 pip install indic-nlp-library
-
 git clone https://github.com/anoopkunchukuttan/indic_nlp_resources.git
-
 git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 ```
 
