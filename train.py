@@ -12,6 +12,8 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 
+from transformers import ViTFeatureExtractor, ViTModel
+
 from utils.dataset import HVGDataset
 from utils.custom_transform import ToSequence
 
@@ -26,11 +28,19 @@ if __name__ == '__main__':
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, text_transform=text_transform, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=1, shuffle=False)
 
+	feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
+	model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
+
 	for _, (image, caption, target, target_seq_len) in enumerate (train_dataloader):
 		print (f'image - {image.shape}')
 		print (f'caption - {caption.shape}')
 		print (f'target - {target.shape}')
 		print (f'target_seq_len - {target_seq_len.shape}')
 
+		inputs = feature_extractor(images=image, return_tensors="pt")
+		outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
+		last_hidden_states = outputs.last_hidden_state
+
+		print (f'output shape - {last_hidden_states.shape}')
 		break
 	
