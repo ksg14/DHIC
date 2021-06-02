@@ -35,6 +35,11 @@ class Config ():
     word_to_index_path = data_path / 'word_to_index.json'
     index_to_word_path = data_path / 'index_to_word.json'
 
+    # model
+    pretrained_model_path = Path ('pretrained_model')
+    pretrained_vitfe_path = pretrained_model_path / 'vit_feature_extractor'
+    pretrained_vit_path = pretrained_model_path / 'vit'
+
     max_len = 464
 
     def save_config (self):
