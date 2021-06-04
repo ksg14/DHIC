@@ -19,6 +19,32 @@ from utils.custom_transform import ToSequence
 
 from utils.config import Config
 
+def train (feature_extractor, model, decoder, dataloader):
+	for image, caption, target, target_seq_len in train_dataloader:
+	# print (f'image shape - {image.shape}')
+	# print (f'caption - {caption.shape}')
+	# print (f'target - {target.shape}')
+	# print (f'target_seq_len shape- {target_seq_len.shape}')
+	# print (f'target_seq_len - {target_seq_len}')
+
+	# print (f'image[0].shape {image [0].shape}')
+
+	# print (f'max - {image.max ()}')
+	# print (f'min - {image.min ()}')
+
+	images_list = [image [i] for i in range (config.batch_sz)]
+	# print (type (images_list))
+	# print (type (images_list [0]))
+	# print (images_list [0].shape)
+
+	inputs = feature_extractor(images=images_list, return_tensors="pt")
+	outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
+	last_hidden_states = outputs.last_hidden_state
+
+	print (f'output shape - {last_hidden_states.shape}')
+	break
+
+
 if __name__ == '__main__':
 	config = Config ()
 
@@ -31,27 +57,9 @@ if __name__ == '__main__':
 	feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
 	model = ViTModel.from_pretrained(config.pretrained_vit_path)
 
-	for image, caption, target, target_seq_len in train_dataloader:
-		print (f'image shape - {image.shape}')
-		print (f'caption - {caption.shape}')
-		print (f'target - {target.shape}')
-		print (f'target_seq_len shape- {target_seq_len.shape}')
-		print (f'target_seq_len - {target_seq_len}')
-
-		print (f'image[0].shape {image [0].shape}')
-
-		print (f'max - {image.max ()}')
-		print (f'min - {image.min ()}')
-
-		images_list = [image [i] for i in range (config.batch_sz)]
-		print (type (images_list))
-		print (type (images_list [0]))
-		print (images_list [0].shape)
-
-		inputs = feature_extractor(images=images_list, return_tensors="pt")
-		outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
-		last_hidden_states = outputs.last_hidden_state
-
-		print (f'output shape - {last_hidden_states.shape}')
-		break
 	
+
+	train (feature_extractor=feature_extractor, \
+			model=model, \
+			decoder=decoder, \
+			dataloader=train_dataloader)
