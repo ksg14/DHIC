@@ -48,7 +48,7 @@ if __name__ == '__main__':
 		print (type (images_list [0]))
 		print (images_list [0].shape)
 
-		inputs = feature_extractor(images=image, return_tensors="pt")
+		inputs = feature_extractor(images=images_list, return_tensors="pt")
 		outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
 		last_hidden_states = outputs.last_hidden_state
 
