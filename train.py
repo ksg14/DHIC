@@ -22,16 +22,14 @@ from utils.config import Config
 if __name__ == '__main__':
 	config = Config ()
 
-	batch_size=2
-
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, 'data/images/', 464, text_transform=text_transform, image_transform=image_transform)
-	train_dataloader = DataLoader (train_dataset, batch_size=2, shuffle=False)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, 'data/images/', config.max_len, text_transform=text_transform, image_transform=image_transform)
+	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=False)
 
-	# feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
-	# model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
+	# feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
+	# model = ViTModel.from_pretrained(config.pretrained_vit_path)
 
 	for image, caption, target, target_seq_len in train_dataloader:
 		print (f'image shape - {image.shape}')
@@ -45,7 +43,7 @@ if __name__ == '__main__':
 		print (f'max - {image.max ()}')
 		print (f'min - {image.min ()}')
 
-		images_list = [image [i] for i in range (batch_size)]
+		images_list = [image [i] for i in range (config.batch_sz)]
 		print (type (images_list))
 		print (type (images_list [0]))
 		print (images_list [0].shape)

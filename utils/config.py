@@ -41,6 +41,7 @@ class Config ():
     pretrained_vit_path = pretrained_model_path / 'vit'
 
     max_len = 464
+    batch_sz = 1
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]
