@@ -25,8 +25,8 @@ if __name__ == '__main__':
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, 'data/images/', config.max_len, text_transform=text_transform, image_transform=image_transform)
-	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=False)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=text_transform, image_transform=image_transform)
+	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	# feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
 	# model = ViTModel.from_pretrained(config.pretrained_vit_path)
