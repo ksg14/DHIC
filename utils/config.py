@@ -5,7 +5,7 @@ import os
 from torch._C import set_flush_denormal
 
 class Config ():
-    def __init__ (self, config_path=None) -> None:
+    def __init__ (self, config_path:Path = None) -> None:
         if config_path:
             with open (config_path, 'r') as f:
                 config_data = json.load (f)

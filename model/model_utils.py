@@ -10,7 +10,6 @@ from einops.layers.torch import Rearrange, Reduce
 import math
 
 class PositionalEncoding(nn.Module):
-
     def __init__(self, d_model: int, dropout: float, max_len: int):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
