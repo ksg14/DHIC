@@ -28,8 +28,8 @@ if __name__ == '__main__':
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=text_transform, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
-	# feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
-	# model = ViTModel.from_pretrained(config.pretrained_vit_path)
+	feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
+	model = ViTModel.from_pretrained(config.pretrained_vit_path)
 
 	for image, caption, target, target_seq_len in train_dataloader:
 		print (f'image shape - {image.shape}')
@@ -47,11 +47,11 @@ if __name__ == '__main__':
 		print (type (images_list))
 		print (type (images_list [0]))
 		print (images_list [0].shape)
-		break
-		# inputs = feature_extractor(images=image, return_tensors="pt")
-		# outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
-		# last_hidden_states = outputs.last_hidden_state
 
-		# print (f'output shape - {last_hidden_states.shape}')
+		inputs = feature_extractor(images=image, return_tensors="pt")
+		outputs = model(**inputs, output_attentions=False, output_hidden_states=False)
+		last_hidden_states = outputs.last_hidden_state
+
+		print (f'output shape - {last_hidden_states.shape}')
 		break
 	
