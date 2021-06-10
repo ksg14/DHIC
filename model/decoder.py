@@ -22,7 +22,7 @@ class Decoder(Module):
 
 		# print (f'fc out - {fc_out.shape}')
 
-		outputs = self.electra_model (input_ids=caption.view (batch_sz, -1), attention_mask=caption_mask.view (batch_sz, -1), encoder_hidden_states=enc_last_hidden, labels=target.view (batch_sz, -1), output_attentions=self.out_attentions)
+		outputs = self.model (input_ids=caption.view (batch_sz, -1), attention_mask=caption_mask.view (batch_sz, -1), encoder_hidden_states=enc_last_hidden, labels=target.view (batch_sz, -1), output_attentions=self.out_attentions)
 
 		if self.out_attentions:
 			attentions = outputs.attentions
