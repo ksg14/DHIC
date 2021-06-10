@@ -22,10 +22,10 @@ from utils.config import Config
 def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_model: ElectraModel, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
 		# print (f'image shape - {image.shape}')
-		print (f'caption - {caption.shape}')
-		print (f'caption mask - {caption_mask.shape}')
-		print (f'target - {target.shape}')
-		print (f'target mask - {target_mask.shape}')
+		print (f'caption - {caption.shape} - {caption}')
+		print (f'caption mask - {caption_mask.shape} - {caption_mask}')
+		print (f'target - {target.shape} - {target}')
+		print (f'target mask - {target_mask.shape} - {target_mask}')
 		# print (f'target_seq_len shape- {target_seq_len.shape}')
 		# print (f'target_seq_len - {target_seq_len}')
 
@@ -55,11 +55,13 @@ if __name__ == '__main__':
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 	tokenizer = ElectraTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
-	print (f'padding side {tokenizer.padding_side}')
-	print (f'bos tok {tokenizer.bos_token}')
-	print (f'eos tok {tokenizer.eos_token}')
-	print (f'pad tok {tokenizer.pad_token}')
-	print (f'pad tok {tokenizer.mask_token}')
+	# print (f'padding side {tokenizer.padding_side}')
+	# print (f'bos tok {tokenizer.bos_token}')
+	# print (f'eos tok {tokenizer.eos_token}')
+	# print (f'pad tok {tokenizer.pad_token}')
+	# print (f'mask tok {tokenizer.mask_token}')
+	tokenizer.bos_token = '[START]'
+	tokenizer.bos_token = '[END]'
 
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, electra_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)

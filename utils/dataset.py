@@ -48,6 +48,9 @@ class HVGDataset (Dataset):
 		
 			target = self.electra_transform (f'{caption_str} {self.electra_transform.eos_token}', max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
+			print (f'str - {self.electra_transform.bos_token} {caption_str}')
+			print (f"tok - {self.electra_transform.tokenize (self.electra_transform.bos_token+' '+caption_str)}")
+
 			return image, caption.input_ids, caption.attention_mask, target.input_ids, target.attention_mask	
 
 		if self.text_transform:
