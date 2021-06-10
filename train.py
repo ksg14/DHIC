@@ -55,22 +55,22 @@ if __name__ == '__main__':
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 	tokenizer = ElectraTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
-	print (f'padding side {tokenizer.padding_side}')
-	print (f'bos tok {tokenizer.bos_token}')
-	print (f'bos tok id {tokenizer.bos_token_id}')
-	print (f'eos tok {tokenizer.eos_token}')
-	print (f'eos tok id {tokenizer.eos_token_id}')
-	print (f'pad tok {tokenizer.pad_token}')
-	print (f'pad tok id {tokenizer.pad_token_id}')
-	print (f'mask tok {tokenizer.mask_token}')
-	print (f'vocab size {tokenizer.vocab_size}')
-	print (f'0 -  {tokenizer.decode (0)}')
-	print (f'1 -  {tokenizer.decode (1)}')
-	print (f'2 -  {tokenizer.decode (2)}')
-	print (f'3 -  {tokenizer.decode (3)}')
-	print (f'4 -  {tokenizer.decode (4)}')
-	tokenizer.bos_token = '[START]'
-	tokenizer.eos_token = '[END]'
+	# print (f'padding side {tokenizer.padding_side}')
+	# print (f'bos tok {tokenizer.bos_token}')
+	# print (f'bos tok id {tokenizer.bos_token_id}')
+	# print (f'eos tok {tokenizer.eos_token}')
+	# print (f'eos tok id {tokenizer.eos_token_id}')
+	# print (f'pad tok {tokenizer.pad_token}')
+	# print (f'pad tok id {tokenizer.pad_token_id}')
+	# print (f'mask tok {tokenizer.mask_token}')
+	# print (f'vocab size {tokenizer.vocab_size}')
+	# print (f'0 -  {tokenizer.decode (0)}')
+	# print (f'1 -  {tokenizer.decode (1)}')
+	# print (f'2 -  {tokenizer.decode (2)}')
+	# print (f'3 -  {tokenizer.decode (3)}')
+	# print (f'4 -  {tokenizer.decode (4)}')
+	# tokenizer.bos_token = '[START]'
+	# tokenizer.eos_token = '[END]'
 
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, electra_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)

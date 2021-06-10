@@ -35,21 +35,22 @@ class HVGDataset (Dataset):
 	def __getitem__ (self, idx: str) -> Tuple:
 		image_id = self.captions ['annotations'] [idx] ['image_id']
 		caption_str = self.captions ['annotations'] [idx] ['caption']
-
 		# Image
-		# image_file = os.path.join (self.images_path, f'{image_id}.jpg')
-		image_file = os.path.join (self.images_path, f'16.jpg')
+		image_file = os.path.join (self.images_path, f'{image_id}.jpg')
+		# image_file = os.path.join (self.images_path, f'16.jpg')
 		image = Image.open (image_file)
 		if self.image_transform:
 			image = self.image_transform (image)
 
 		if self.electra_transform:
-			caption = self.electra_transform (f'{self.electra_transform.bos_token} {caption_str}', max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
-		
-			target = self.electra_transform (f'{caption_str} {self.electra_transform.eos_token}', max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
+			caption_tok = self.electra_transform.tokenize (caption_str)
 
-			print (f'str - {self.electra_transform.bos_token} {caption_str}')
-			print (f"tok - {self.electra_transform.tokenize (self.electra_transform.bos_token+' '+caption_str)}")
+			print (f'caption - {caption_tok [:-1]}')
+			print (f'target - {caption_tok [1:]}')
+
+			caption = self.electra_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
+		
+			target = self.electra_transform (caption_tok [1:], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
 			return image, caption.input_ids, caption.attention_mask, target.input_ids, target.attention_mask	
 
