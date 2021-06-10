@@ -61,7 +61,7 @@ if __name__ == '__main__':
 	# print (f'pad tok {tokenizer.pad_token}')
 	# print (f'mask tok {tokenizer.mask_token}')
 	tokenizer.bos_token = '[START]'
-	tokenizer.bos_token = '[END]'
+	tokenizer.eos_token = '[END]'
 
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, electra_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
