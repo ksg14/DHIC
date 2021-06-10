@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel
+from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel, ElectraForMaskedLM
 
 from config import Config
 
@@ -20,7 +20,7 @@ def save_vit_model (config: Config) -> int:
 def save_electra_decoder (config: Config) -> int:
 	try:
 		tokenizer = ElectraTokenizer.from_pretrained("monsoon-nlp/hindi-bert")
-		model = ElectraModel.from_pretrained("monsoon-nlp/hindi-bert", is_decoder = True)
+		model = ElectraForMaskedLM.from_pretrained("monsoon-nlp/hindi-bert", is_decoder = True)
 
 		tokenizer.save_pretrained(config.pretrained_tokenizer_path)
 		model.save_pretrained(config.pretrained_electra_path)
