@@ -14,7 +14,7 @@ class Decoder(Module):
 
 	def __post_init__(self):
 		super().__init__ ()
-		self.model = BertLMHeadModel.from_pretrained(self.decoder_path, is_decoder = True)
+		self.model = BertLMHeadModel.from_pretrained(self.decoder_path, is_decoder = True, add_cross_attention=True)
 		# self.fc = Linear (self.enc_hidden_dim, self.electra_model.config.hidden_size)
 
 	def forward (self, batch_sz: int, caption: Tensor, caption_mask: Tensor, target: Tensor, enc_last_hidden: Tensor) -> Tensor:

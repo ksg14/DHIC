@@ -20,7 +20,7 @@ def save_vit_model (config: Config) -> int:
 def save_bert_decoder (config: Config) -> int:
 	try:
 		tokenizer = BertTokenizer.from_pretrained("neuralspace-reverie/indic-transformers-hi-bert")
-		model = BertLMHeadModel.from_pretrained("neuralspace-reverie/indic-transformers-hi-bert", is_decoder = True)
+		model = BertLMHeadModel.from_pretrained("neuralspace-reverie/indic-transformers-hi-bert", is_decoder = True, add_cross_attention=True)
 
 		tokenizer.save_pretrained(config.pretrained_tokenizer_path)
 		model.save_pretrained(config.pretrained_decoder_path)
