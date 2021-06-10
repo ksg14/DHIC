@@ -95,7 +95,7 @@ if __name__ == '__main__':
 	parser.add_argument('-c',
                        '--clean',
                        action='store_true',
-                       help='get raw caption stats')
+                       help='get clean caption stats')
 
 	args = parser.parse_args()
 
