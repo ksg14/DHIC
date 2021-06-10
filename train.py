@@ -48,7 +48,7 @@ def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloa
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
 		dec_outputs = decoder (caption, caption_mask, enc_last_hidden)
-
+		
 
 		break
 
