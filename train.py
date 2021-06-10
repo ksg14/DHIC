@@ -21,11 +21,11 @@ from utils.config import Config
 
 def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_model: ElectraModel, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
-		# print (f'image shape - {image.shape}')
-		print (f'caption - {caption.shape} - {caption}')
-		print (f'caption mask - {caption_mask.shape} - {caption_mask}')
+		print (f'image shape - {image.shape}')
+		print (f'caption - {caption.shape}')
+		print (f'caption mask - {caption_mask.shape}')
 		print (f'target - {target.shape} - {target}')
-		print (f'target mask - {target_mask.shape} - {target_mask}')
+		print (f'target mask - {target_mask.shape}')
 		# print (f'target_seq_len shape- {target_seq_len.shape}')
 		# print (f'target_seq_len - {target_seq_len}')
 

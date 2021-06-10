@@ -43,7 +43,7 @@ class Config ():
     pretrained_electra_path = pretrained_model_path / 'electra'
 
     max_len = 464
-    batch_sz = 1
+    batch_sz = 2
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]
