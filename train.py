@@ -16,14 +16,14 @@ from torchvision import transforms as T
 from transformers import ElectraTokenizer, BertTokenizer
 
 from model.encoder import VitEncoder
-from model.decoder import ElectraDecoder
+from model.decoder import Decoder
 
 from utils.dataset import HVGDataset
 from utils.custom_transform import ToSequence
 
 from utils.config import Config
 
-def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloader: DataLoader):
+def train (config: Config, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
 		print (f'image shape - {image.shape}')
 		print (f'caption - {caption.shape}')
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False)
 
 	# Decoder
-	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path, out_attentions=False)
+	decoder = Decoder (electra_path=config.pretrained_electra_path, out_attentions=False)
 
 	train (config=config, \
 			encoder=encoder, \
