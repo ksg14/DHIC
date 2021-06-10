@@ -1,7 +1,7 @@
 from torch import nn
 
-from model_utils import PatchEmbedding
-from encoder import TransformerEncoder
+from .model_utils import PatchEmbedding
+from .encoder import TransformerEncoder
 
 class VisionTransformerEncoder(nn.Sequential):
     def __init__(self,     

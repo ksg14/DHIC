@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from transformers.models import electra
 
-from model_utils import PositionalEncoding
+from .model_utils import PositionalEncoding
 
 @dataclass
 class ElectraDecoder(Module):

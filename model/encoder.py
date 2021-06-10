@@ -6,7 +6,7 @@ from torch.tensor import Tensor
 
 from transformers import ViTFeatureExtractor, ViTModel
 
-from model_utils import ResidualAdd, MultiHeadAttention, FeedForwardBlock
+from .model_utils import ResidualAdd, MultiHeadAttention, FeedForwardBlock
 
 @dataclass
 class VitEncoder(nn.Sequential):

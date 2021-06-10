@@ -3,7 +3,7 @@ import argparse
 
 from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel
 
-from config import Config
+from .config import Config
 
 def save_vit_model (config: Config) -> int:
 	try:
