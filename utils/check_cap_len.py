@@ -8,7 +8,7 @@ from typing import List
 from tqdm import tqdm
 import argparse
 
-from .config import Config
+from utils.config import Config
 
 # Indic library
 import sys

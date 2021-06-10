@@ -3,7 +3,7 @@ from pathlib import WindowsPath
 from typing import List, Tuple
 from tqdm import tqdm
 
-from .config import Config
+from utils.config import Config
 
 # Indic library
 import sys

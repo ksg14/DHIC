@@ -3,7 +3,7 @@ from typing import List
 from tqdm import tqdm
 import re
 
-from .config import Config
+from utils.config import Config
 
 # Indic library
 import sys
