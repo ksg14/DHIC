@@ -13,7 +13,7 @@ import numpy as np
 import json
 
 class HVGDataset (Dataset):
-	def __init__ (self, captions_file : Path, word_to_index_file : Path, index_to_word_file : Path, images_path : Path, max_len : int, text_transform : Callable=None, image_transform : Callable=None) -> None:
+	def __init__ (self, captions_file : Path, word_to_index_file : Path, index_to_word_file : Path, images_path : Path, max_len : int, text_transform : Callable=None, electra_transform : Callable=None, image_transform : Callable=None) -> None:
 		with open (captions_file, 'r') as file_io:
 			self.captions = json.load (file_io)
 		
@@ -26,6 +26,7 @@ class HVGDataset (Dataset):
 		self.max_len = max_len
 		self.images_path = images_path
 		self.text_transform = text_transform
+		self.electra_transform = electra_transform
 		self.image_transform = image_transform
 
 	def __len__ (self) -> int:
@@ -42,19 +43,21 @@ class HVGDataset (Dataset):
 		if self.image_transform:
 			image = self.image_transform (image)
 
-		# Target Caption
+		if self.electra_transform:
+			caption, caption_mask = self.electra_transform (f'{self.electra_transform.bos_token} {caption_str}', padding='max_lenght', max_length=self.max_len, return_attention_mask=True)
+		
+			target, target_mask = self.electra_transform (f'{caption_str} {self.electra_transform.eos_token}', padding='max_lenght', max_length=self.max_len, return_attention_mask=True)
+
+			return image, caption, caption_mask, target, target_mask	
+
 		if self.text_transform:
 			caption = self.text_transform (f"start {caption_str}", self.word_to_index)
-		
-		if self.text_transform:
 			target = self.text_transform (f"{caption_str} end", self.word_to_index)
-
-		target_seq_len = target.shape [0]
-
-		caption = F.pad (caption, pad=(0, self.max_len-target_seq_len))
-		target = F.pad (target, pad=(0, self.max_len-target_seq_len))
+			target_seq_len = target.shape [0]
+			caption = F.pad (caption, pad=(0, self.max_len-target_seq_len))
+			target = F.pad (target, pad=(0, self.max_len-target_seq_len))
 		
-		return image, caption, target, target_seq_len
+			return image, caption, target, target_seq_len
 
 # if __name__ == '__main__':
 #	 train_dataset = HVGDataset ()
