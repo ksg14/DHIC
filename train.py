@@ -22,7 +22,7 @@ from utils.config import Config
 def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_model: ElectraModel, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
 		print (f'image shape - {image.shape}')
-		print (f'caption - {caption.shape}')
+		print (f'caption - {caption.shape} - {caption}')
 		print (f'caption mask - {caption_mask.shape}')
 		print (f'target - {target.shape} - {target}')
 		print (f'target mask - {target_mask.shape}')
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 	# tokenizer.bos_token = '[START]'
 	# tokenizer.eos_token = '[END]'
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, electra_transform=tokenizer, image_transform=image_transform)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, electra_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	# Encoder
