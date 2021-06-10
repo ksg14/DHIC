@@ -14,7 +14,7 @@ class ElectraDecoder(Module):
 	def __post_init__(self):
 		super().__init__ ()
 		self.electra_model = ElectraModel.from_pretrained(self.electra_path, is_decoder = True)
-		self.fc = Linear (self.enc_hidden_dim, self.electra_model.hidden_size)
+		self.fc = Linear (self.enc_hidden_dim, self.electra_model.config.hidden_size)
 
 	def forward (self, caption: Tensor, caption_mask: Tensor, enc_last_hidden: Tensor) -> Tensor:
 		print (f'caption - {caption.shape}')
