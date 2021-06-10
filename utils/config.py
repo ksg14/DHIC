@@ -42,6 +42,10 @@ class Config ():
     pretrained_tokenizer_path = pretrained_model_path / 'tokenizer'
     pretrained_electra_path = pretrained_model_path / 'electra'
 
+    #hyper params
+
+    #model params
+    vit_enc_dim = 768
     max_len = 464
     batch_sz = 2
 

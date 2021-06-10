@@ -1,5 +1,6 @@
 from torch.nn import Module, TransformerDecoderLayer, TransformerDecoder, Embedding, Linear
 from torch.tensor import Tensor
+import torch.nn.functional as F
 
 from transformers import ElectraModel
 
@@ -19,7 +20,7 @@ class ElectraDecoder(Module):
 		print (f'caption - {caption.shape}')
 		print (f'enc hidden - {enc_last_hidden}')
 
-		fc_out = self.fc (enc_last_hidden)
+		fc_out = F.gelu (self.fc (enc_last_hidden))
 
 		print (f'fc out - {fc_out.shape}')
 

@@ -48,7 +48,7 @@ def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloa
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
 		dec_outputs = decoder (caption, caption_mask, enc_last_hidden)
-		
+
 
 		break
 
@@ -83,10 +83,10 @@ if __name__ == '__main__':
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	# Encoder
-	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path)
+	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False)
 
 	# Decoder
-	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path)
+	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path, enc_hidden_dim=config.vit_enc_dim)
 
 	print (f'electra hidden {decoder.hidden_size}')
 
