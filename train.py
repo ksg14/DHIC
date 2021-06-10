@@ -55,11 +55,14 @@ if __name__ == '__main__':
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 	tokenizer = ElectraTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
-	# print (f'padding side {tokenizer.padding_side}')
-	# print (f'bos tok {tokenizer.bos_token}')
-	# print (f'eos tok {tokenizer.eos_token}')
-	# print (f'pad tok {tokenizer.pad_token}')
-	# print (f'mask tok {tokenizer.mask_token}')
+	print (f'padding side {tokenizer.padding_side}')
+	print (f'bos tok {tokenizer.bos_token}')
+	print (f'bos tok id {tokenizer.bos_token_id}')
+	print (f'eos tok {tokenizer.eos_token}')
+	print (f'eos tok id {tokenizer.eos_token_id}')
+	print (f'pad tok {tokenizer.pad_token}')
+	print (f'pad tok id {tokenizer.pad_token_id}')
+	print (f'mask tok {tokenizer.mask_token}')
 	tokenizer.bos_token = '[START]'
 	tokenizer.eos_token = '[END]'
 
