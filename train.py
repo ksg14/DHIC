@@ -47,7 +47,7 @@ def train (config: Config, encoder: VitEncoder, decoder: Decoder, dataloader: Da
 
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
-		dec_loss, dec_logits, dec_attentions = decoder (caption, caption_mask, enc_last_hidden)
+		dec_loss, dec_logits, dec_attentions = decoder (config.batch_sz, caption, caption_mask, enc_last_hidden)
 
 
 		break
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False)
 
 	# Decoder
-	decoder = Decoder (electra_path=config.pretrained_electra_path, out_attentions=False)
+	decoder = Decoder (electra_path=config.pretrained_decoder_path, out_attentions=False)
 
 	train (config=config, \
 			encoder=encoder, \
