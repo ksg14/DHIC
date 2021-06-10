@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel, ElectraForMaskedLM
+from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel, ElectraForMaskedLM, BertTokenizer, BertLMHeadModel
 
 from config import Config
 
@@ -17,13 +17,25 @@ def save_vit_model (config: Config) -> int:
 		return 1
 	return 0
 
+def save_bert_decoder (config: Config) -> int:
+	try:
+		tokenizer = BertTokenizer.from_pretrained("neuralspace-reverie/indic-transformers-hi-bert")
+		model = BertLMHeadModel.from_pretrained("neuralspace-reverie/indic-transformers-hi-bert", is_decoder = True)
+
+		tokenizer.save_pretrained(config.pretrained_tokenizer_path)
+		model.save_pretrained(config.pretrained_decoder_path)
+	except Exception as e:
+		print (f'Error - {str (e)}')
+		return 1
+	return 0
+
 def save_electra_decoder (config: Config) -> int:
 	try:
 		tokenizer = ElectraTokenizer.from_pretrained("monsoon-nlp/hindi-bert")
 		model = ElectraForMaskedLM.from_pretrained("monsoon-nlp/hindi-bert", is_decoder = True)
 
 		tokenizer.save_pretrained(config.pretrained_tokenizer_path)
-		model.save_pretrained(config.pretrained_electra_path)
+		model.save_pretrained(config.pretrained_decoder_path)
 	except Exception as e:
 		print (f'Error - {str (e)}')
 		return 1
@@ -64,9 +76,12 @@ if __name__ == '__main__' :
 		if not os.path.exists (config.pretrained_tokenizer_path):
 			os.mkdir (config.pretrained_tokenizer_path)
 		
-		if not os.path.exists (config.pretrained_electra_path):
-			os.mkdir (config.pretrained_electra_path)
+		if not os.path.exists (config.pretrained_decoder_path):
+			os.mkdir (config.pretrained_decoder_path)
 		
-		save_electra_decoder (config)
+		# save_electra_decoder (config)
+		save_bert_decoder (config)
+	
+
 
 	print ('Done!')

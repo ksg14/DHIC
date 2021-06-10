@@ -40,7 +40,7 @@ class Config ():
     pretrained_vitfe_path = pretrained_model_path / 'vit_feature_extractor'
     pretrained_vit_path = pretrained_model_path / 'vit'
     pretrained_tokenizer_path = pretrained_model_path / 'tokenizer'
-    pretrained_electra_path = pretrained_model_path / 'electra'
+    pretrained_decoder_path = pretrained_model_path / 'decoder'
 
     #hyper params
 

@@ -13,7 +13,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 
-from transformers import ElectraTokenizer
+from transformers import ElectraTokenizer, BertTokenizer
 
 from model.encoder import VitEncoder
 from model.decoder import ElectraDecoder
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
-	tokenizer = ElectraTokenizer.from_pretrained(config.pretrained_tokenizer_path)
+	tokenizer = BertTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
 	# print (f'padding side {tokenizer.padding_side}')
 	# print (f'bos tok {tokenizer.bos_token}')

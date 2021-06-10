@@ -2,31 +2,34 @@ from torch.nn import Module, TransformerDecoderLayer, TransformerDecoder, Embedd
 from torch.tensor import Tensor
 import torch.nn.functional as F
 
-from transformers import ElectraModel, ElectraForMaskedLM
+from transformers import ElectraModel, ElectraForMaskedLM, BertLMHeadModel
 
 from dataclasses import dataclass
 
 @dataclass
-class ElectraDecoder(Module):
-	electra_path: str
-	enc_hidden_dim: int
+class Decoder(Module):
+	decoder_path: str
+	# enc_hidden_dim: int
 	out_attentions: bool=False
 
 	def __post_init__(self):
 		super().__init__ ()
-		self.electra_model = ElectraModel.from_pretrained(self.electra_path, is_decoder = True)
-		self.fc = Linear (self.enc_hidden_dim, self.electra_model.config.hidden_size)
+		self.model = BertLMHeadModel.from_pretrained(self.decoder_path, is_decoder = True)
+		# self.fc = Linear (self.enc_hidden_dim, self.electra_model.config.hidden_size)
 
-	def forward (self, batch_sz: int, caption: Tensor, caption_mask: Tensor, enc_last_hidden: Tensor) -> Tensor:
-		fc_out = F.gelu (self.fc (enc_last_hidden))
+	def forward (self, batch_sz: int, caption: Tensor, caption_mask: Tensor, target: Tensor, enc_last_hidden: Tensor) -> Tensor:
+		# fc_out = F.gelu (self.fc (enc_last_hidden))
 
-		print (f'fc out - {fc_out.shape}')
+		# print (f'fc out - {fc_out.shape}')
 
-		outputs = self.electra_model (input_ids=caption.view (batch_sz, -1), attention_mask=caption_mask.view (batch_sz, -1), encoder_hidden_states=fc_out, output_attentions=self.out_attentions)
+		outputs = self.electra_model (input_ids=caption.view (batch_sz, -1), attention_mask=caption_mask.view (batch_sz, -1), encoder_hidden_states=enc_last_hidden, labels=target, output_attentions=self.out_attentions)
 
-
-
-		return None
+		if self.out_attentions:
+			attentions = outputs.attentions
+		else:
+			attentions = None
+		
+		return outputs.loss, outputs.logits, attentions
 
 # @dataclass
 # class VitDecoder(Module):
