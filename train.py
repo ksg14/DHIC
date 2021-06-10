@@ -47,8 +47,9 @@ def train (config: Config, encoder: VitEncoder, decoder: Decoder, dataloader: Da
 
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
-		dec_loss, dec_logits, dec_attentions = decoder (config.batch_sz, caption, caption_mask, enc_last_hidden)
+		dec_loss, dec_logits, dec_attentions = decoder (config.batch_sz, caption, caption_mask, target, enc_last_hidden)
 
+		print (f'loss - {dec_loss}')
 
 		break
 
