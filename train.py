@@ -55,6 +55,12 @@ if __name__ == '__main__':
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
 	tokenizer = ElectraTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
+	print (f'padding side {tokenizer.padding_side}')
+	print (f'bos tok {tokenizer.bos_token}')
+	print (f'eos tok {tokenizer.eos_token}')
+	print (f'pad tok {tokenizer.pad_token}')
+	print (f'pad tok {tokenizer.mask_token}')
+
 	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, electra_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
