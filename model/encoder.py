@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
-from torch import nn
+from torch.nn import Module
 from torch.tensor import Tensor
 
 from transformers import ViTFeatureExtractor, ViTModel
 
 @dataclass
-class VitEncoder(nn.Module):
+class VitEncoder(Module):
 	fe_path: Path
 	vit_path: Path
 	out_attentions: bool=False

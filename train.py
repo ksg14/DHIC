@@ -86,7 +86,7 @@ if __name__ == '__main__':
 	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False)
 
 	# Decoder
-	decoder = Decoder (electra_path=config.pretrained_decoder_path, out_attentions=False)
+	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
 
 	train (config=config, \
 			encoder=encoder, \
