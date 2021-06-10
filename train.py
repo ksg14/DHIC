@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 
-from transformers import ViTFeatureExtractor, ViTModel
+from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel
 
 from utils.dataset import HVGDataset
 from utils.custom_transform import ToSequence
@@ -55,9 +55,10 @@ if __name__ == '__main__':
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
-	model = ViTModel.from_pretrained(config.pretrained_vit_path)
+	vit_model = ViTModel.from_pretrained(config.pretrained_vit_path)
 
-	
+	tokenizer = ElectraTokenizer.from_pretrained("monsoon-nlp/hindi-bert")
+	electra_model = ElectraModel.from_pretrained("monsoon-nlp/hindi-bert", is_decoder = True)
 
 	train (feature_extractor=feature_extractor, \
 			model=model, \
