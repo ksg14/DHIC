@@ -47,7 +47,7 @@ def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloa
 
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
-		dec_outputs = decoder (caption, caption_mask, enc_last_hidden)
+		dec_loss, dec_logits, dec_attentions = decoder (caption, caption_mask, enc_last_hidden)
 
 
 		break
@@ -79,14 +79,14 @@ if __name__ == '__main__':
 	# tokenizer.bos_token = '[START]'
 	# tokenizer.eos_token = '[END]'
 
-	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, electra_transform=tokenizer, image_transform=image_transform)
+	train_dataset = HVGDataset (config.train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	# Encoder
 	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False)
 
 	# Decoder
-	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path, enc_hidden_dim=config.vit_enc_dim)
+	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path, out_attentions=False)
 
 	train (config=config, \
 			encoder=encoder, \

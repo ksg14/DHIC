@@ -13,7 +13,7 @@ import numpy as np
 import json
 
 class HVGDataset (Dataset):
-	def __init__ (self, captions_file: Path, word_to_index_file: Path, index_to_word_file: Path, images_path: Path, max_len : int, text_transform: Callable=None, tokenizer: Callable=None, electra_transform: Callable=None, image_transform: Callable=None) -> None:
+	def __init__ (self, captions_file: Path, word_to_index_file: Path, index_to_word_file: Path, images_path: Path, max_len : int, text_transform: Callable=None, tokenizer: Callable=None, decoder_transform: Callable=None, image_transform: Callable=None) -> None:
 		with open (captions_file, 'r') as file_io:
 			self.captions = json.load (file_io)
 		
@@ -27,7 +27,7 @@ class HVGDataset (Dataset):
 		self.images_path = images_path
 		self.text_transform = text_transform
 		self.tokenizer = tokenizer
-		self.electra_transform = electra_transform
+		self.decoder_transform = decoder_transform
 		self.image_transform = image_transform
 
 	def __len__ (self) -> int:
@@ -43,18 +43,18 @@ class HVGDataset (Dataset):
 		if self.image_transform:
 			image = self.image_transform (image)
 
-		if self.electra_transform:
+		if self.decoder_transform:
 			if self.tokenizer:
 				caption_tok = self.tokenizer (caption_str)
 			else:
-				caption_tok = self.electra_transform.tokenize (caption_str)
+				caption_tok = self.decoder_transform.tokenize (caption_str)
 
 			# print (f'caption - {caption_tok [:-1]}')
 			# print (f'target - {caption_tok [1:]}')
 
-			caption = self.electra_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
+			caption = self.decoder_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 		
-			target = self.electra_transform (caption_tok [1:], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
+			target = self.decoder_transform (caption_tok [1:], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
 			return image, caption.input_ids, caption.attention_mask, target.input_ids, target.attention_mask	
 
