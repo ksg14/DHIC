@@ -1,4 +1,5 @@
 # Indic library
+from json import decoder
 import sys
 from indicnlp import common
 INDIC_NLP_LIB_HOME=r"indic_nlp_library"
@@ -12,19 +13,22 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 
-from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, ElectraModel
+from transformers import ElectraTokenizer
+
+from model.encoder import VitEncoder
+from model.decoder import ElectraDecoder
 
 from utils.dataset import HVGDataset
 from utils.custom_transform import ToSequence
 
 from utils.config import Config
 
-def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_model: ElectraModel, dataloader: DataLoader):
+def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
 		print (f'image shape - {image.shape}')
-		print (f'caption - {caption.shape} - {caption}')
+		print (f'caption - {caption.shape}')
 		print (f'caption mask - {caption_mask.shape}')
-		print (f'target - {target.shape} - {target}')
+		print (f'target - {target.shape}')
 		print (f'target mask - {target_mask.shape}')
 		# print (f'target_seq_len shape- {target_seq_len.shape}')
 		# print (f'target_seq_len - {target_seq_len}')
@@ -39,11 +43,11 @@ def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_
 		# print (type (images_list [0]))
 		# print (images_list [0].shape)
 
-		inputs = feature_extractor(images=images_list, return_tensors="pt")
-		outputs = vit_model(**inputs, output_attentions=False, output_hidden_states=False)
-		last_hidden_states = outputs.last_hidden_state
+		enc_last_hidden = encoder (images_list)
 
-		print (f'output shape - {last_hidden_states.shape}')
+		print (f'vit enc out - {enc_last_hidden.shape}')
+
+		dec_outputs = decoder (caption, caption_mask, enc_last_hidden)
 
 
 		break
@@ -69,6 +73,9 @@ if __name__ == '__main__':
 	# print (f'2 -  {tokenizer.decode (2)}')
 	# print (f'3 -  {tokenizer.decode (3)}')
 	# print (f'4 -  {tokenizer.decode (4)}')
+	# print (f'5 -  {tokenizer.decode (5)}')
+	# print (f'6 -  {tokenizer.decode (6)}')
+	# print (f'7 -  {tokenizer.decode (7)}')
 	# tokenizer.bos_token = '[START]'
 	# tokenizer.eos_token = '[END]'
 
@@ -76,13 +83,14 @@ if __name__ == '__main__':
 	train_dataloader = DataLoader (train_dataset, batch_size=config.batch_sz, shuffle=True)
 
 	# Encoder
-	feature_extractor = ViTFeatureExtractor.from_pretrained(config.pretrained_vitfe_path)
-	vit_model = ViTModel.from_pretrained(config.pretrained_vit_path)
+	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path)
 
 	# Decoder
-	electra_model = ElectraModel.from_pretrained(config.pretrained_electra_path, is_decoder = True)
+	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path)
 
-	train (feature_extractor=feature_extractor, \
-			vit_model=vit_model, \
-			electra_model=electra_model, \
+	print (f'electra hidden {decoder.hidden_size}')
+
+	train (config=config, \
+			encoder=encoder, \
+			decoder=decoder, \
 			dataloader=train_dataloader)

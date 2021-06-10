@@ -49,8 +49,8 @@ class HVGDataset (Dataset):
 			else:
 				caption_tok = self.electra_transform.tokenize (caption_str)
 
-			print (f'caption - {caption_tok [:-1]}')
-			print (f'target - {caption_tok [1:]}')
+			# print (f'caption - {caption_tok [:-1]}')
+			# print (f'target - {caption_tok [1:]}')
 
 			caption = self.electra_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 		
