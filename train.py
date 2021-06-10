@@ -43,7 +43,7 @@ def train (config: Config, encoder: VitEncoder, decoder: ElectraDecoder, dataloa
 		# print (type (images_list [0]))
 		# print (images_list [0].shape)
 
-		enc_last_hidden = encoder (images_list)
+		enc_last_hidden, enc_attentions = encoder (images_list)
 
 		print (f'vit enc out - {enc_last_hidden.shape}')
 
