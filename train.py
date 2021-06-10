@@ -88,8 +88,6 @@ if __name__ == '__main__':
 	# Decoder
 	decoder = ElectraDecoder (electra_path=config.pretrained_electra_path, enc_hidden_dim=config.vit_enc_dim)
 
-	print (f'electra hidden {decoder.hidden_size}')
-
 	train (config=config, \
 			encoder=encoder, \
 			decoder=decoder, \
