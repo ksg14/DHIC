@@ -5,7 +5,7 @@ from transformers import ViTFeatureExtractor, ViTModel, ElectraTokenizer, Electr
 
 from config import Config
 
-def save_vit_model (config):
+def save_vit_model (config: Config) -> int:
 	try:
 		feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224-in21k')
 		model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
@@ -17,7 +17,7 @@ def save_vit_model (config):
 		return 1
 	return 0
 
-def save_electra_decoder (config):
+def save_electra_decoder (config: Config) -> int:
 	try:
 		tokenizer = ElectraTokenizer.from_pretrained("monsoon-nlp/hindi-bert")
 		model = ElectraModel.from_pretrained("monsoon-nlp/hindi-bert", is_decoder = True)

@@ -19,7 +19,7 @@ from utils.custom_transform import ToSequence
 
 from utils.config import Config
 
-def train (feature_extractor, vit_model, electra_model, dataloader):
+def train (feature_extractor: ViTFeatureExtractor, vit_model: ViTModel, electra_model: ElectraModel, dataloader: DataLoader):
 	for image, caption, caption_mask, target, target_mask in dataloader:
 		# print (f'image shape - {image.shape}')
 		print (f'caption - {caption.shape}')

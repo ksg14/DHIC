@@ -44,9 +44,9 @@ class HVGDataset (Dataset):
 			image = self.image_transform (image)
 
 		if self.electra_transform:
-			caption, caption_mask = self.electra_transform (f'{self.electra_transform.bos_token} {caption_str}', padding='max_lenght', max_length=self.max_len, return_attention_mask=True)
+			caption, caption_mask = self.electra_transform (f'{self.electra_transform.bos_token} {caption_str}', max_length=self.max_len, padding='max_length', return_attention_mask=True)
 		
-			target, target_mask = self.electra_transform (f'{caption_str} {self.electra_transform.eos_token}', padding='max_lenght', max_length=self.max_len, return_attention_mask=True)
+			target, target_mask = self.electra_transform (f'{caption_str} {self.electra_transform.eos_token}', max_length=self.max_len, padding='max_length', return_attention_mask=True)
 
 			return image, caption, caption_mask, target, target_mask	
 
