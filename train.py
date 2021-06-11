@@ -175,8 +175,8 @@ if __name__ == '__main__':
 	print(f'Device - {device}')
 
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
-	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224)), T.Normalize (config.img_mean, config.img_std)])
-	# image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
+	# image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224)), T.Normalize (config.img_mean, config.img_std)])
+	image_transform = T.Compose ([T.ToTensor()])
 	tokenizer = BertTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
 	# print (f'padding side {tokenizer.padding_side}')
@@ -206,7 +206,7 @@ if __name__ == '__main__':
 	val_dataloader = DataLoader (val_dataset, batch_size=args.batch_sz, shuffle=True)
 
 	# Encoder
-	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False, do_resize=False, do_normalize=False)
+	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False, do_resize=True, do_normalize=True)
 
 	# Decoder
 	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
