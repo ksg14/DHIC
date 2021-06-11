@@ -19,19 +19,19 @@ def clean_captions (captions : List, token_threshold: int) -> Dict:
 	clean_captions = { 'annotations' : [] }
 	for img in tqdm (captions):
 		tokens = indic_tokenize.trivial_tokenize (img ['caption'])
-        image_file = os.path.join (config.images_path, f"{img ['image_id']}.jpg")
+		image_file = os.path.join (config.images_path, f"{img ['image_id']}.jpg")
 
-        if len (tokens) >= token_threshold and os.path.exists (image_file):
-            clean_captions ['annotations'].append ({
-                'image_id' : img ['image_id'],
-                'caption' : img ['caption']
-            })
+		if len (tokens) >= token_threshold and os.path.exists (image_file):
+			clean_captions ['annotations'].append ({
+				'image_id' : img ['image_id'],
+				'caption' : img ['caption']
+			})
 	return clean_captions
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Get clean captions')
 	parser.add_argument('--threshold', type=int, default=20)
-    
+		
 	args = parser.parse_args()
 
 	config = Config ()
