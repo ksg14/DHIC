@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path, PurePath
 import json
 import os
 
@@ -11,9 +11,15 @@ class Config ():
                 config_data = json.load (f)
                 self.load_config (**config_data)
 
-        # if not os.path.exists(self.output_path):
-        #     os.makedirs(self.output_path)
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
 
+    # results
+    output_path = Path (r'results/exp-bert-1/')
+    enc_model_path = output_path / 'enc_model.pth'
+    dec_model_path = output_path / 'dec_model.pth'
+    stats_json_path = output_path / 'stats.json'
+    stats_pkl_path = output_path / 'stats.pkl'
     
     # data
     data_path = Path ('data')
@@ -47,13 +53,18 @@ class Config ():
     #model params
     vit_enc_dim = 768
     max_len = 464
-    batch_sz = 2
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]
-        save_data = { key : Config.__dict__ [key] for key in attributes }
+        save_data = {}
+
+        for key in attributes:
+            if isinstance(Config.__dict__ [key], PurePath):
+                save_data [key] = str (Config.__dict__ [key])
+            else:
+                save_data [key] = Config.__dict__ [key]
    
-        with open (f'{self.output_path}config.json', 'w') as f:
+        with open (self.output_path / 'config.json', 'w') as f:
             json.dump (save_data, f)
         return
 
@@ -62,7 +73,10 @@ class Config ():
 
         for key, value in kwargs.items():
             if key in class_attributes:
-                setattr (Config, key, value)
+                if isinstance (value, str):
+                    setattr (Config, key, Path (value))
+                else:
+                    setattr (Config, key, value)
         # print (Config.__dict__)
         return
 
