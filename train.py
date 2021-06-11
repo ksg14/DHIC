@@ -136,6 +136,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 								decoder=decoder, val_dataloader=val_dataloader, device=device)
 		epoch_stats ['val']['loss'].append (val_loss)
 
+		# Save best epoch model
 		if val_loss < best_epoch_loss:
 			best_epoch_loss = val_loss
 			best_epoch = epoch
@@ -209,11 +210,11 @@ if __name__ == '__main__':
 	# Decoder
 	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
 
-	enc_optim = Adam(encoder.parameters(), lr=args.lr)
-	dec_optim = Adam(decoder.parameters(), lr=args.lr)
-
 	encoder.to (device)
 	decoder.to (device)
+
+	enc_optim = Adam(encoder.parameters(), lr=args.lr)
+	dec_optim = Adam(decoder.parameters(), lr=args.lr)
 
 	epoch_stats, best_epoch = train (args=args, \
 									config=config, \
@@ -228,8 +229,8 @@ if __name__ == '__main__':
 	print (f'Best epoch - {best_epoch} !')
 
 	try:
-		with open (config.stats_json_path, 'w') as f:
-			json.dump (epoch_stats, f)
+		with open (config.stats_json_path, 'w') as file_io:
+			json.dump (epoch_stats, file_io)
 			print (f'Stats saved to {config.stats_json_path}')
 	except Exception:
 		pickle.dump(epoch_stats, open(config.stats_pkl_path, 'wb'))
@@ -237,6 +238,7 @@ if __name__ == '__main__':
 		
 	try:
 		config.save_config ()
+		print (f'Saved config')
 	except Exception as e:
 		print (f'Unable to save config {str (e)}')
 		
