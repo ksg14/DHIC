@@ -70,7 +70,7 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 				val_loss += dec_loss.item ()
 				
 				tepoch.set_postfix (val_loss=(val_loss / n_len))
-				break
+				# break
 		val_loss /= n_len
 	return val_loss
 
@@ -129,7 +129,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 					epoch_stats ['train']['loss'] [-1] += (dec_loss.item () / n_len)
 				
 				tepoch.set_postfix (train_loss=epoch_stats ['train']['loss'] [-1])
-				break
+				# break
 		# break
 		
 		val_loss = validate (args=args, config=config, encoder=encoder, \
