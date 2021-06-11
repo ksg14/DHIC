@@ -8,11 +8,17 @@ from torch.tensor import Tensor
 from transformers import ViTFeatureExtractor, ViTModel
 
 class VitEncoder(Module):
-	def __init__(self, fe_path: Path, vit_path: Path, out_attentions: bool=False):
+	def __init__(self, fe_path: Path, vit_path: Path, out_attentions: bool=False, do_resize: bool=False, do_normalize: bool=False):
 		super().__init__()
 		self.out_attentions = out_attentions
+		self.do_resize = do_resize
+		self.do_normalize = do_normalize
 
-		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path)
+		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path, do_resize=self.do_resize, do_normalize=self.do_normalize)
+		
+		print (f'img mean - {self.feature_extractor.image_mean}')
+		print (f'img std - {self.feature_extractor.image_std}')
+
 		self.vit_model = ViTModel.from_pretrained(vit_path)
 
 	def forward (self, images_list: List[Tensor]) -> Tuple:

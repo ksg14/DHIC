@@ -51,6 +51,8 @@ class Config ():
     #hyper params
 
     #model params
+    img_mean = [0.5, 0.5, 0.5]
+    img_std = [0.5, 0.5, 0.5]
     vit_enc_dim = 768
     max_len = 464
 
