@@ -39,7 +39,7 @@ class HVGDataset (Dataset):
 		# Image
 		image_file = os.path.join (self.images_path, f'{image_id}.jpg')
 		# image_file = os.path.join (self.images_path, f'16.jpg')
-		image = Image.open (image_file)
+		image = Image.open (image_file).convert('RGB')
 		if self.image_transform:
 			image = self.image_transform (image)
 
