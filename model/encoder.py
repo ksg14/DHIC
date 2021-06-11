@@ -4,15 +4,17 @@ from typing import List, Tuple
 
 from torch.nn import Module
 from torch.tensor import Tensor
+from torch.types import Device
 
 from transformers import ViTFeatureExtractor, ViTModel
 
 class VitEncoder(Module):
-	def __init__(self, fe_path: Path, vit_path: Path, out_attentions: bool=False, do_resize: bool=False, do_normalize: bool=False):
+	def __init__(self, fe_path: Path, vit_path: Path, device: Device, out_attentions: bool=False, do_resize: bool=False, do_normalize: bool=False):
 		super().__init__()
 		self.out_attentions = out_attentions
 		self.do_resize = do_resize
 		self.do_normalize = do_normalize
+		self.device = device
 
 		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path, do_resize=self.do_resize, do_normalize=self.do_normalize)
 		
@@ -24,9 +26,9 @@ class VitEncoder(Module):
 	def forward (self, images_list: List[Tensor]) -> Tuple:
 		print (f'images_list device - {images_list[0].device}')
 
-		image_inputs = self.feature_extractor(images=images_list, return_tensors="pt")
+		image_inputs = self.feature_extractor(images=images_list, return_tensors="pt").to (self.device)
 
-		print (f'image inputs {image_inputs.pixel_values.shape}')
+		print (f'pixel values - {image_inputs.pixel_values.shape}')
 
 		enc_outputs = self.vit_model(**image_inputs, output_attentions=self.out_attentions)
 		enc_last_hidden_state = enc_outputs.last_hidden_state
