@@ -59,7 +59,7 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 			for image, caption, caption_mask, target, target_mask in tepoch:
 				tepoch.set_description (f'Validating ')
 
-				image, caption, caption_mask, target, target_mask = image.to (device), caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
+				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
 
 				images_list = [image [i] for i in range (args.batch_sz)]
 
