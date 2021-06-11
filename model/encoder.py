@@ -22,7 +22,6 @@ class VitEncoder(Module):
 		self.vit_model = ViTModel.from_pretrained(vit_path)
 
 	def forward (self, images_list: List[Tensor]) -> Tuple:
-		print (f'fe device - {next(self.feature_extractor.parameters()).device}')
 		print (f'images_list device - {images_list.device}')
 
 		image_inputs = self.feature_extractor(images=images_list, return_tensors="pt")
