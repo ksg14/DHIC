@@ -206,7 +206,7 @@ if __name__ == '__main__':
 	val_dataloader = DataLoader (val_dataset, batch_size=args.batch_sz, shuffle=True)
 
 	# Encoder
-	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False, do_resize=False, do_normalize=True)
+	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, out_attentions=False, do_resize=True, do_normalize=True)
 
 	# Decoder
 	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
