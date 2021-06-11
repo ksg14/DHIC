@@ -31,9 +31,9 @@ class HVGDataset (Dataset):
 		self.image_transform = image_transform
 
 	def __len__ (self) -> int:
-		return len (self.captions)
+		return len (self.captions ['annotations'])
 		
-	def __getitem__ (self, idx: str) -> Tuple:
+	def __getitem__ (self, idx: int) -> Tuple:
 		image_id = self.captions ['annotations'] [idx] ['image_id']
 		caption_str = self.captions ['annotations'] [idx] ['caption']
 		# Image
