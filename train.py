@@ -94,27 +94,29 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 				enc_optim.zero_grad()
 				dec_optim.zero_grad()
 
-				# print (f'image shape - {image.shape}')
-				# print (f'caption - {caption.shape}')
-				# print (f'caption mask - {caption_mask.shape}')
-				# print (f'target - {target.shape}')
-				# print (f'target mask - {target_mask.shape}')
-				# print (f'target_seq_len shape- {target_seq_len.shape}')
-				# print (f'target_seq_len - {target_seq_len}')
-
-				# print (f'image[0].shape {image [0].shape}')
-
-				# print (f'max - {image.max ()}')
-				# print (f'min - {image.min ()}')
+				if args.logs:
+					print (f'image shape - {image.shape}')
+					print (f'caption - {caption.shape}')
+					print (f'caption mask - {caption_mask.shape}')
+					print (f'target - {target.shape}')
+					print (f'target mask - {target_mask.shape}')
+					# print (f'target_seq_len shape- {target_seq_len.shape}')
+					# print (f'target_seq_len - {target_seq_len}')
+					# print (f'image[0].shape {image [0].shape}')
+					print (f'max - {image.max ()}')
+					print (f'min - {image.min ()}')
 
 				images_list = [image [i] for i in range (args.batch_sz)]
-				# print (type (images_list))
-				# print (type (images_list [0]))
-				# print (images_list [0].shape)
+
+				if args.logs:
+					print (f'type image list - {type (images_list)}')
+					print (f'type image [0] - {type (images_list [0])}')
+					print (f'images [0] - {images_list [0].shape}')
 
 				enc_last_hidden, enc_attentions = encoder (images_list)
 
-				# print (f'vit enc out - {enc_last_hidden.shape}')
+				if args.logs:
+					print (f'vit enc out - {enc_last_hidden.shape}')
 
 				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_last_hidden)
 
@@ -152,10 +154,10 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Get caption len stats')
-	# parser.add_argument('-e',
-	#                    '--encoder',
-    #                    action='store_true',
-    #                    help='get pretrained encoder')
+	parser.add_argument('-l',
+						'--logs',
+						action='store_true',
+						help='print logs')
 	parser.add_argument('--epochs', type=int, default=20)
 	parser.add_argument('--batch_sz', type=int, default=128)
 	parser.add_argument('--lr', type=float, default=1e-6)
