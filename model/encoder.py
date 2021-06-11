@@ -16,13 +16,16 @@ class VitEncoder(Module):
 
 		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path, do_resize=self.do_resize, do_normalize=self.do_normalize)
 		
-		print (f'img mean - {self.feature_extractor.image_mean}')
-		print (f'img std - {self.feature_extractor.image_std}')
+		# print (f'fe img mean - {self.feature_extractor.image_mean}')
+		# print (f'fe img std - {self.feature_extractor.image_std}')
 
 		self.vit_model = ViTModel.from_pretrained(vit_path)
 
 	def forward (self, images_list: List[Tensor]) -> Tuple:
 		image_inputs = self.feature_extractor(images=images_list, return_tensors="pt")
+
+		print (f'image inputs {image_inputs.pixel_values.shape}')
+
 		enc_outputs = self.vit_model(**image_inputs, output_attentions=self.out_attentions)
 		enc_last_hidden_state = enc_outputs.last_hidden_state
 
