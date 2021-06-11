@@ -89,7 +89,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 			for image, caption, caption_mask, target, target_mask in tepoch:
 				tepoch.set_description (f'Epoch {epoch}')
 
-				image, caption, caption_mask, target, target_mask = image.to (device), caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
+				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
 
 				enc_optim.zero_grad()
 				dec_optim.zero_grad()
