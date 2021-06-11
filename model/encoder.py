@@ -24,11 +24,7 @@ class VitEncoder(Module):
 		self.vit_model = ViTModel.from_pretrained(vit_path)
 
 	def forward (self, images_list: List[Tensor]) -> Tuple:
-		print (f'images_list device - {images_list[0].device}')
-
 		image_inputs = self.feature_extractor(images=images_list, return_tensors="pt").to (self.device)
-
-		print (f'pixel values - {image_inputs.pixel_values.shape}')
 
 		enc_outputs = self.vit_model(**image_inputs, output_attentions=self.out_attentions)
 		enc_last_hidden_state = enc_outputs.last_hidden_state
