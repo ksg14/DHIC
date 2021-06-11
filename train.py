@@ -154,7 +154,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 	return epoch_stats, best_epoch
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(description='Get caption len stats')
+	parser = argparse.ArgumentParser(description='Training code')
 	parser.add_argument('-l',
 						'--logs',
 						action='store_true',

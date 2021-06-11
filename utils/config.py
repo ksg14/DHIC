@@ -29,6 +29,9 @@ class Config ():
     train_captions = captions_path / 'para_captions_train.json'
     val_captions = captions_path / 'para_captions_val.json'
     test_captions = captions_path / 'para_captions_test.json'
+    clean_train_captions = captions_path / 'clean_captions_train.json'
+    clean_val_captions = captions_path / 'clean_captions_val.json'
+    clean_test_captions = captions_path / 'clean_captions_test.json'
     # clean
     clean_train = data_path / 'clean_train.json'
     clean_val = data_path / 'clean_val.json'
