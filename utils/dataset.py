@@ -58,6 +58,7 @@ class HVGDataset (Dataset):
 
 			print (f'caption ids - {caption.input_ids.shape}')
 			print (f'caption ids - {caption.input_ids}')
+			print (f'decode - {self.decoder_transform.decode (caption.input_ids [0])}')
 
 			caption = self.decoder_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 		
