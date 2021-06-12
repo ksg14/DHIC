@@ -205,7 +205,7 @@ if __name__ == '__main__':
 	train_dataset = HVGDataset (config.clean_train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=args.batch_sz, shuffle=True)
 
-	val_dataset = HVGDataset (config.clean_val_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
+	val_dataset = HVGDataset (config.clean_val_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=None, decoder_transform=tokenizer, image_transform=image_transform)
 	val_dataloader = DataLoader (val_dataset, batch_size=args.batch_sz, shuffle=True)
 
 	# Encoder

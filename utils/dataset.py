@@ -55,12 +55,15 @@ class HVGDataset (Dataset):
 			print (f'seq len - {seq_len}')
 
 			caption = self.decoder_transform (caption_tok, is_split_into_words=True, return_tensors='pt')
+			tok_len = caption.input_ids.shape [1]
+			# print (f'caption ids - {caption.input_ids.shape}')
+			# print (f'caption ids - {caption.input_ids}')
+			# print (f'decode - {self.decoder_transform.decode (caption.input_ids [0])}')
+			print (f'tok len - {tok_len}')
 
-			print (f'caption ids - {caption.input_ids.shape}')
-			print (f'caption ids - {caption.input_ids}')
-			print (f'decode - {self.decoder_transform.decode (caption.input_ids [0])}')
 
-			caption = self.decoder_transform (caption_tok [:-1], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
+
+			caption = self.decoder_transform (caption_tok, is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 		
 			target = self.decoder_transform (caption_tok [1:], is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
