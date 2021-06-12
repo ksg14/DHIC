@@ -34,5 +34,9 @@ class VitEncoder(Module):
 			attentions = None
 
 		return enc_last_hidden_state, attentions
+	
+	def save_model (self, fe_save_path: Path, vit_save_path: Path) -> None:
+		self.feature_extractor.save_pretrained (fe_save_path)
+		self.vit_model.save_pretrained (vit_save_path)
 
 

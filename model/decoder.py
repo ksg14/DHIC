@@ -27,6 +27,9 @@ class Decoder(Module):
 			attentions = None
 		
 		return outputs.loss, outputs.logits, attentions
+	
+	def save_model (self, save_path: Path) -> None:
+		self.model.save_pretrained (save_path)
 
 # @dataclass
 # class VitDecoder(Module):

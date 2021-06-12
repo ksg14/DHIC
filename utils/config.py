@@ -13,11 +13,33 @@ class Config ():
 
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
+        
+        if not os.path.exists(self.tokenizer_path):
+            os.makedirs(self.tokenizer_path)
+        
+        if not os.path.exists(self.enc_model_path):
+            os.makedirs(self.enc_model_path)
+        
+        if not os.path.exists(self.dec_model_path):
+            os.makedirs(self.dec_model_path)
+        
+        if not os.path.exists(self.last_tokenizer_path):
+            os.makedirs(self.last_tokenizer_path)
+        
+        if not os.path.exists(self.last_enc_model_path):
+            os.makedirs(self.last_enc_model_path)
+        
+        if not os.path.exists(self.last_dec_model_path):
+            os.makedirs(self.last_dec_model_path)
 
     # results
     output_path = Path (r'results/exp-bert-1/')
-    enc_model_path = output_path / 'enc_model.pth'
-    dec_model_path = output_path / 'dec_model.pth'
+    tokenizer_path = output_path / 'tokenizer'
+    enc_model_path = output_path / 'enc_model'
+    dec_model_path = output_path / 'dec_model'
+    last_tokenizer_path = output_path / 'last_tokenizer'
+    last_enc_model_path = output_path / 'last_enc_model'
+    last_dec_model_path = output_path / 'last_dec_model'
     stats_json_path = output_path / 'stats.json'
     stats_pkl_path = output_path / 'stats.pkl'
     
