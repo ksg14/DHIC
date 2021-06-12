@@ -59,8 +59,6 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 			for image, caption, caption_mask, target, target_mask in tepoch:
 				tepoch.set_description (f'Validating ')
 
-				break
-
 				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
 
 				images_list = [image [i] for i in range (args.batch_sz)]
@@ -220,33 +218,33 @@ if __name__ == '__main__':
 	enc_optim = Adam(encoder.parameters(), lr=args.lr)
 	dec_optim = Adam(decoder.parameters(), lr=args.lr)
 
-	# epoch_stats, best_epoch = train (args=args, \
-	# 								config=config, \
-	# 								encoder=encoder, \
-	# 								decoder=decoder, \
-	# 								enc_optim=enc_optim, \
-	# 								dec_optim=dec_optim, \
-	# 								train_dataloader=train_dataloader, \
-	# 								val_dataloader=val_dataloader, \
-	# 								device=device)
+	epoch_stats, best_epoch = train (args=args, \
+									config=config, \
+									encoder=encoder, \
+									decoder=decoder, \
+									enc_optim=enc_optim, \
+									dec_optim=dec_optim, \
+									train_dataloader=train_dataloader, \
+									val_dataloader=val_dataloader, \
+									device=device)
 
 	validate (args=args, config=config, encoder=encoder, decoder=decoder, val_dataloader=val_dataloader, device=device)
 	
-	# print (f'Best epoch - {best_epoch} !')
+	print (f'Best epoch - {best_epoch} !')
 
-	# try:
-	# 	with open (config.stats_json_path, 'w') as file_io:
-	# 		json.dump (epoch_stats, file_io)
-	# 		print (f'Stats saved to {config.stats_json_path}')
-	# except Exception:
-	# 	pickle.dump(epoch_stats, open(config.stats_pkl_path, 'wb'))
-	# 	print (f'Stats saved to {config.stats_pkl_path}')
+	try:
+		with open (config.stats_json_path, 'w') as file_io:
+			json.dump (epoch_stats, file_io)
+			print (f'Stats saved to {config.stats_json_path}')
+	except Exception:
+		pickle.dump(epoch_stats, open(config.stats_pkl_path, 'wb'))
+		print (f'Stats saved to {config.stats_pkl_path}')
 		
-	# try:
-	# 	config.save_config ()
-	# 	print (f'Saved config')
-	# except Exception as e:
-	# 	print (f'Unable to save config {str (e)}')
+	try:
+		config.save_config ()
+		print (f'Saved config')
+	except Exception as e:
+		print (f'Unable to save config {str (e)}')
 		
 		
 	print ('Done !')

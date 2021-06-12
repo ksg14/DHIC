@@ -49,35 +49,25 @@ class HVGDataset (Dataset):
 			else:
 				caption_tok = self.decoder_transform.tokenize (caption_str)
 
-			# print (f'caption - {caption_tok [:-1]}')
-			# print (f'target - {caption_tok [1:]}')
-			seq_len = len (caption_tok)
-			print (f'seq len - {seq_len}')
-
 			tmp_caption = self.decoder_transform (caption_tok, is_split_into_words=True, return_tensors='pt')
 			tok_len = tmp_caption.input_ids.shape [1]
 
-			# print (f'caption ids - {caption.input_ids.shape}')
-			# print (f'caption ids - {caption.input_ids}')
-			# print (f'decode - {self.decoder_transform.decode (caption.input_ids [0])}')
-			print (f'tok len - {tok_len}')
-
 			caption = self.decoder_transform (caption_tok, is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
-			print (f'ids - {caption.input_ids.shape} - {caption.input_ids}')
-			print (f'mask - {caption.attention_mask.shape} -  {caption.attention_mask}')
+			# print (f'ids - {caption.input_ids.shape} - {caption.input_ids}')
+			# print (f'mask - {caption.attention_mask.shape} -  {caption.attention_mask}')
 
 			caption_src = torch.cat ([caption.input_ids [:, :tok_len-1], caption.input_ids [:, tok_len:]], dim=1)
 			caption_src_mask = torch.cat ([caption.attention_mask [:, :tok_len-1], caption.attention_mask [:, tok_len:]], dim=1)
 
-			print (f'src ids - {caption_src.shape} - {caption_src}')
-			print (f'src mask - {caption_src_mask.shape} {caption_src_mask}')
+			# print (f'src ids - {caption_src.shape} - {caption_src}')
+			# print (f'src mask - {caption_src_mask.shape} {caption_src_mask}')
 
 			caption_tgt = caption.input_ids [:, 1:]
 			caption_tgt_mask = caption.attention_mask [:, 1:]
 			
-			print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
-			print (f'tgt mask - {caption_tgt_mask.shape} - {caption_tgt_mask}')
+			# print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
+			# print (f'tgt mask - {caption_tgt_mask.shape} - {caption_tgt_mask}')
 
 			return image, caption_src, caption_src_mask, caption_tgt, caption_tgt_mask	
 
