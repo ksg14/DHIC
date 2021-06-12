@@ -64,20 +64,20 @@ class HVGDataset (Dataset):
 
 			caption = self.decoder_transform (caption_tok, is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
 
-			print (f'ids - {caption.input_ids}')
-			print (f'mask - {caption.attention_mask}')
+			print (f'ids - {caption.input_ids.shape} - {caption.input_ids}')
+			print (f'mask - {caption.attention_mask.shape} -  {caption.attention_mask}')
 
 			caption_src = torch.cat ([caption.input_ids [:, :tok_len], caption.input_ids [:, tok_len+1:]], dim=1)
 			caption_src_mask = torch.cat ([caption.attention_mask [:, :tok_len], caption.attention_mask [:, tok_len+1:]], dim=1)
 
-			print (f'src ids - {caption.input_ids}')
-			print (f'src mask - {caption.attention_mask}')
+			print (f'src ids - {caption_src.shape} - {caption_src}')
+			print (f'src mask - {caption_src_mask.shape} {caption_src_mask}')
 
 			caption_tgt = caption.input_ids [:, 1:]
 			caption_tgt_mask = caption.attention_mask [:, 1:]
 			
-			print (f'tgt ids - {caption.input_ids}')
-			print (f'tgt mask - {caption.attention_mask}')
+			print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
+			print (f'tgt mask - {caption_tgt_mask.shape} - {caption_tgt_mask}')
 
 			return image, caption_src, caption_src_mask, caption_tgt, caption_tgt_mask	
 
