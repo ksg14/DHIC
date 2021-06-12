@@ -190,14 +190,15 @@ if __name__ == '__main__':
 	# print (f'pad tok id {tokenizer.pad_token_id}')
 	# print (f'mask tok {tokenizer.mask_token}')
 	# print (f'vocab size {tokenizer.vocab_size}')
-	# print (f'0 -  {tokenizer.decode (0)}')
-	# print (f'1 -  {tokenizer.decode (1)}')
+	print (f'0 -  {tokenizer.decode (0)}')
+	print (f'1 -  {tokenizer.decode (1)}')
 	# print (f'2 -  {tokenizer.decode (2)}')
 	# print (f'3 -  {tokenizer.decode (3)}')
 	# print (f'4 -  {tokenizer.decode (4)}')
 	# print (f'5 -  {tokenizer.decode (5)}')
 	# print (f'6 -  {tokenizer.decode (6)}')
 	# print (f'7 -  {tokenizer.decode (7)}')
+	print (f'80 -  {tokenizer.decode (80)}')
 	# tokenizer.bos_token = '[START]'
 	# tokenizer.eos_token = '[END]'
 
