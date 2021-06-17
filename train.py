@@ -129,8 +129,8 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 					epoch_stats ['train']['loss'] [-1] += (dec_loss.item () / n_len)
 				
 				tepoch.set_postfix (train_loss=epoch_stats ['train']['loss'] [-1])
-				break
-		break
+				# break
+		# break
 		
 		val_loss = validate (args=args, config=config, encoder=encoder, \
 								decoder=decoder, val_dataloader=val_dataloader, device=device)
