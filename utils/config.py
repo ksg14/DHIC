@@ -79,7 +79,7 @@ class Config ():
     img_mean = [0.5, 0.5, 0.5]
     img_std = [0.5, 0.5, 0.5]
     vit_enc_dim = 768
-    max_len = 464
+    max_len = 466
 
     def save_config (self):
         attributes = [ key for key in Config.__dict__ if key [0] != '_' and not callable(Config.__dict__ [key])]
