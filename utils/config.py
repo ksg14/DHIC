@@ -14,8 +14,8 @@ class Config ():
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
         
-        if not os.path.exists(self.tokenizer_path):
-            os.makedirs(self.tokenizer_path)
+        if not os.path.exists(self.fe_path):
+            os.makedirs(self.fe_path)
         
         if not os.path.exists(self.enc_model_path):
             os.makedirs(self.enc_model_path)
@@ -23,8 +23,8 @@ class Config ():
         if not os.path.exists(self.dec_model_path):
             os.makedirs(self.dec_model_path)
         
-        if not os.path.exists(self.last_tokenizer_path):
-            os.makedirs(self.last_tokenizer_path)
+        if not os.path.exists(self.last_fe_path):
+            os.makedirs(self.last_fe_path)
         
         if not os.path.exists(self.last_enc_model_path):
             os.makedirs(self.last_enc_model_path)
