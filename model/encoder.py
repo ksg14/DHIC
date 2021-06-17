@@ -1,9 +1,8 @@
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
+from torch import Tensor
 from torch.nn import Module
-from torch.tensor import Tensor
 from torch.types import Device
 
 from transformers import ViTFeatureExtractor, ViTModel
