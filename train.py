@@ -142,13 +142,13 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 			best_epoch = epoch
 
 			print ('Saving new best model')
-			encoder.save_model (fe_save_path=config.tokenizer_path, vit_save_path=config.enc_model_path)
+			encoder.save_model (fe_save_path=config.fe_path, vit_save_path=config.enc_model_path)
 			decoder.save_model (save_path=config.dec_model_path)
 
 		# Save last epoch model
 		if epoch == args.epochs-1:
 			print ('Saving last epoch model')
-			encoder.save_model (fe_save_path=config.last_tokenizer_path, vit_save_path=config.last_enc_model_path)
+			encoder.save_model (fe_save_path=config.last_fe_path, vit_save_path=config.last_enc_model_path)
 			decoder.save_model (save_path=config.last_dec_model_path)
 
 	return epoch_stats, best_epoch

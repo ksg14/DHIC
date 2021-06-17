@@ -34,10 +34,10 @@ class Config ():
 
     # results
     output_path = Path (r'results/exp-bert-1/')
-    tokenizer_path = output_path / 'tokenizer'
+    fe_path = output_path / 'fe'
     enc_model_path = output_path / 'enc_model'
     dec_model_path = output_path / 'dec_model'
-    last_tokenizer_path = output_path / 'last_tokenizer'
+    last_fe_path = output_path / 'last_fe'
     last_enc_model_path = output_path / 'last_enc_model'
     last_dec_model_path = output_path / 'last_dec_model'
     stats_json_path = output_path / 'stats.json'
