@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Tuple
 from torch.nn import Module, TransformerDecoderLayer, TransformerDecoder, Embedding, Linear
-from torch.tensor import Tensor
+from torch import Tensor
 import torch.nn.functional as F
 
 from transformers import ElectraModel, ElectraForMaskedLM, BertLMHeadModel
