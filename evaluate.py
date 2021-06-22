@@ -69,7 +69,7 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 					'gt_caption' : caption_str [0], 
 					'pred_caption' : pred_caption_str
 				})
-				break
+				# break
 
 				gt_tokens = tokenizer.tokenize (caption_str [0])
 				pred_tokens = tokenizer.tokenize (pred_caption_str)

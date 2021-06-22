@@ -33,7 +33,7 @@ class Config ():
             os.makedirs(self.last_dec_model_path)
 
     # results
-    output_path = Path (r'results/exp-bert-1/')
+    output_path = Path (r'results/exp-bert-2/')
     fe_path = output_path / 'fe'
     enc_model_path = output_path / 'enc_model'
     dec_model_path = output_path / 'dec_model'
