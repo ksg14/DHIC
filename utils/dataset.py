@@ -60,13 +60,13 @@ class HVGDataset (Dataset):
 			caption_src = torch.cat ([caption.input_ids [:, :tok_len-1], caption.input_ids [:, tok_len:]], dim=1)
 			caption_src_mask = torch.cat ([caption.attention_mask [:, :tok_len-1], caption.attention_mask [:, tok_len:]], dim=1)
 
-			print (f'src ids - {caption_src.shape} - {caption_src}')
+			# print (f'src ids - {caption_src.shape} - {caption_src}')
 			# print (f'src mask - {caption_src_mask.shape} {caption_src_mask}')
 
 			caption_tgt = caption.input_ids [:, 1:]
 			caption_tgt_mask = caption.attention_mask [:, 1:]
 			
-			print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
+			# print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
 			# print (f'tgt mask - {caption_tgt_mask.shape} - {caption_tgt_mask}')
 
 			return image_id, caption_str, image, caption_src, caption_src_mask, caption_tgt, caption_tgt_mask	

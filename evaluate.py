@@ -56,7 +56,8 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				enc_last_hidden, enc_attentions = encoder (images_list)
 
-				dec_out = decoder.generate (enc_last_hidden=enc_last_hidden, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
+				start_id = torch.tensor (args.batch_sz, 1, device=device)
+				dec_out = decoder.generate (input_ids=start_id, enc_last_hidden=enc_last_hidden, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
 
 				pred_caption_str = tokenizer.decode(dec_out, skip_special_tokens=True)
 
