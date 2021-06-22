@@ -56,10 +56,7 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				enc_outputs = encoder (images_list)
 
-				start_id = torch.ones (args.batch_sz, 1, device=device)
 				dec_out = decoder.generate (enc_outputs=enc_outputs, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
-
-				print (dec_out)
 
 				pred_caption_str = tokenizer.decode(dec_out [0], skip_special_tokens=True)
 
@@ -112,9 +109,9 @@ if __name__ == '__main__':
 	# print (f'pad tok id {tokenizer.pad_token_id}')
 	# print (f'mask tok {tokenizer.mask_token}')
 	# print (f'vocab size {tokenizer.vocab_size}')
-	print (f'0 -  {tokenizer.decode (0)}')
-	print (f'1 -  {tokenizer.decode (1)}')
-	print (f'2 -  {tokenizer.decode (2)}')
+	# print (f'0 -  {tokenizer.decode (0)}')
+	# print (f'1 -  {tokenizer.decode (1)}')
+	# print (f'2 -  {tokenizer.decode (2)}')
 	# print (f'3 -  {tokenizer.decode (3)}')
 	# print (f'4 -  {tokenizer.decode (4)}')
 	# print (f'5 -  {tokenizer.decode (5)}')
@@ -128,10 +125,10 @@ if __name__ == '__main__':
 	test_dataloader = DataLoader (test_dataset, batch_size=args.batch_sz, shuffle=True)
 
 	# Encoder
-	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
+	encoder = VitEncoder (fe_path=config.fe_path, vit_path=config.enc_model_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
 
 	# Decoder
-	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
+	decoder = Decoder (decoder_path=config.dec_model_path, out_attentions=False)
 
 	encoder.to (device)
 	decoder.to (device)
