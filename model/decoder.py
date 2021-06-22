@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Tuple
+from typing import Any, Tuple
 from torch.nn import Module, TransformerDecoderLayer, TransformerDecoder, Embedding, Linear
 from torch import Tensor
 import torch.nn.functional as F
@@ -28,11 +28,11 @@ class Decoder(Module):
 		
 		return outputs.loss, outputs.logits, attentions
 	
-	def generate (self, input_ids: Tensor, enc_last_hidden: Tensor, strategy: str, max_len: int, beams: int) -> Tensor:
+	def generate (self, enc_outputs: Any, strategy: str, max_len: int, beams: int) -> Tensor:
 		if strategy == 'greedy':
-			out_ids = self.model.generate (input_ids=input_ids, encoder_hidden_states=enc_last_hidden, max_length=max_len)
+			out_ids = self.model.generate (encoder_outputs=enc_outputs, pad_token_id=2, bos_token_id=1, eos_token_id=0, max_length=max_len)
 		elif strategy == 'beam':
-			out_ids = self.model.generate (input_ids=input_ids, encoder_hidden_states=enc_last_hidden, max_length=max_len, num_beams=beams, early_stopping=True)
+			out_ids = self.model.generate (encoder_outputs=enc_outputs, pad_token_id=2, bos_token_id=1, eos_token_id=0, max_length=max_len, num_beams=beams, early_stopping=True)
 
 		return out_ids
 		

@@ -64,9 +64,9 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 
 				images_list = [image [i] for i in range (args.batch_sz)]
 
-				enc_last_hidden, enc_attentions = encoder (images_list)
+				enc_outputs = encoder (images_list)
 
-				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_last_hidden)
+				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_outputs.last_hidden_state)
 
 				val_loss += dec_loss.item ()
 				
@@ -117,12 +117,12 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 					print (f'type image [0] - {type (images_list [0])}')
 					print (f'images [0] - {images_list [0].shape}')
 
-				enc_last_hidden, enc_attentions = encoder (images_list)
+				enc_outputs = encoder (images_list)
 
 				if args.logs:
-					print (f'vit enc out - {enc_last_hidden.shape}')
+					print (f'vit enc out - {enc_outputs.last_hidden_state.shape}')
 
-				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_last_hidden)
+				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_outputs.last_hidden_state)
 
 				dec_loss.backward()
 				
