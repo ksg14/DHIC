@@ -59,9 +59,9 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 				start_id = torch.ones (args.batch_sz, 1, device=device)
 				dec_out = decoder.generate (enc_outputs=enc_outputs, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
 
-				print (type (dec_out))
+				print (dec_out)
 
-				pred_caption_str = tokenizer.decode(dec_out, skip_special_tokens=True)
+				pred_caption_str = tokenizer.decode(dec_out [0], skip_special_tokens=True)
 
 				predictions.append ({
 					'image_id' : image_id, 
