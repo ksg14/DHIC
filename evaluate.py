@@ -72,10 +72,10 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				gt_tokens = tokenizer.tokenize (caption_str [0])
 				pred_tokens = tokenizer.tokenize (pred_caption_str)
-				bleu_1 += sentence_bleu (gt_tokens, pred_tokens, weights=(1, 0, 0, 0))
-				bleu_2 += sentence_bleu (gt_tokens, pred_tokens, weights=(0.5, 0.5, 0, 0))
-				bleu_3 += sentence_bleu (gt_tokens, pred_tokens, weights=(0.33, 0.33, 0.33, 0))
-				bleu_4 += sentence_bleu (gt_tokens, pred_tokens, weights=(0.25, 0.25, 0.25, 0.25))
+				bleu_1 += sentence_bleu ([gt_tokens], pred_tokens, weights=(1, 0, 0, 0))
+				bleu_2 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.5, 0.5, 0, 0))
+				bleu_3 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.33, 0.33, 0.33, 0))
+				bleu_4 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.25, 0.25, 0.25, 0.25))
 				
 				tepoch.set_postfix (bleu_1=(bleu_1 / n_len))
 				# break
