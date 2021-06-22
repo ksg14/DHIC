@@ -22,7 +22,6 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 from torch.nn import functional as F
-from torch.optim import Adam
 
 from nltk.translate.bleu_score import sentence_bleu
 
@@ -133,10 +132,7 @@ if __name__ == '__main__':
 
 	encoder.to (device)
 	decoder.to (device)
-
-	enc_optim = Adam(encoder.parameters(), lr=args.lr)
-	dec_optim = Adam(decoder.parameters(), lr=args.lr)
-
+	
 	epoch_stats, best_epoch = evaluate (args=args, \
 									config=config, \
 									encoder=encoder, \
