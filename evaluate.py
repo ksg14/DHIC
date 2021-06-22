@@ -1,6 +1,6 @@
 # Indic library
 from pathlib import Path
-from typing import Dict, Tuple, Union
+from typing import Dict, List, Tuple, Union
 from torch.optim.optimizer import Optimizer
 from torch.types import Device
 
@@ -38,7 +38,7 @@ from utils.config import Config
 # import warnings
 # warnings.filterwarnings('ignore')
 
-def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader, device: Device) -> float:
+def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader, device: Device) -> List:
 	n_len = len (dataloader)
 	predictions = []
 
@@ -132,9 +132,10 @@ if __name__ == '__main__':
 
 	encoder.to (device)
 	decoder.to (device)
-	
+
 	epoch_stats, best_epoch = evaluate (args=args, \
 									config=config, \
+									tokenizer=tokenizer, \
 									encoder=encoder, \
 									decoder=decoder, \
 									dataloader=test_dataloader, \
