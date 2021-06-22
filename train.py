@@ -23,6 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms as T
 from torch.nn import functional as F
 from torch.optim import Adam
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from nltk.translate.bleu_score import sentence_bleu
 
@@ -56,7 +57,7 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 
 	with torch.no_grad():
 		with tqdm(val_dataloader) as tepoch:
-			for image, caption, caption_mask, target, target_mask in tepoch:
+			for _, _, image, caption, caption_mask, target, target_mask in tepoch:
 				tepoch.set_description (f'Validating ')
 
 				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
@@ -80,13 +81,16 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 	best_epoch_loss = float ('inf')
 	best_epoch = -1
 
+	enc_scheduler = ReduceLROnPlateau (enc_optim, mode='min', factor=0.1, patience=3, verbose=True)
+	dec_scheduler = ReduceLROnPlateau (dec_optim, mode='min', factor=0.1, patience=3, verbose=True)
+
 	for epoch in range (args.epochs):
 		epoch_stats ['train']['loss'].append (0.0)
 		encoder.train ()
 		decoder.train ()
 
 		with tqdm(train_dataloader) as tepoch:
-			for image, caption, caption_mask, target, target_mask in tepoch:
+			for _, _, image, caption, caption_mask, target, target_mask in tepoch:
 				tepoch.set_description (f'Epoch {epoch}')
 
 				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
@@ -136,6 +140,9 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 								decoder=decoder, val_dataloader=val_dataloader, device=device)
 		epoch_stats ['val']['loss'].append (val_loss)
 
+		enc_scheduler.step (epoch_stats ['train']['loss'] [-1])
+		dec_scheduler.step (epoch_stats ['train']['loss'] [-1])
+
 		# Save best epoch model
 		if val_loss < best_epoch_loss:
 			best_epoch_loss = val_loss
@@ -160,7 +167,7 @@ if __name__ == '__main__':
 						action='store_true',
 						help='print logs')
 	parser.add_argument('--epochs', type=int, default=20)
-	parser.add_argument('--batch_sz', type=int, default=128)
+	parser.add_argument('--batch_sz', type=int, default=1)
 	parser.add_argument('--lr', type=float, default=1e-6)
 	parser.add_argument('--device', type=str, default='cpu')
 
@@ -228,7 +235,7 @@ if __name__ == '__main__':
 									val_dataloader=val_dataloader, \
 									device=device)
 
-	validate (args=args, config=config, encoder=encoder, decoder=decoder, val_dataloader=val_dataloader, device=device)
+	# validate (args=args, config=config, encoder=encoder, decoder=decoder, val_dataloader=val_dataloader, device=device)
 	
 	print (f'Best epoch - {best_epoch} !')
 

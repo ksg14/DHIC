@@ -28,6 +28,14 @@ class Decoder(Module):
 		
 		return outputs.loss, outputs.logits, attentions
 	
+	def generate (self, input_ids: Tensor, enc_last_hidden: Tensor, strategy: str, max_len: int, beams: int) -> Tensor:
+		if strategy == 'greedy':
+			out_ids = self.model.generate (input_ids=input_ids, encoder_hidden_states=enc_last_hidden, max_length=max_len)
+		elif strategy == 'beam':
+			out_ids = self.model.generate (input_ids=input_ids, encoder_hidden_states=enc_last_hidden, max_length=max_len, num_beams=beams, early_stopping=True)
+
+		return out_ids
+		
 	def save_model (self, save_path: Path) -> None:
 		self.model.save_pretrained (save_path)
 
