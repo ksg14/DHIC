@@ -60,6 +60,8 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				pred_caption_str = tokenizer.decode(dec_out [0], skip_special_tokens=True)
 
+				print (pred_caption_str)
+				
 				predictions.append ({
 					'image_id' : image_id, 
 					'gt_caption' : caption_str [0], 
