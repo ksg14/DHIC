@@ -40,14 +40,6 @@ from utils.config import Config
 # import warnings
 # warnings.filterwarnings('ignore')
 
-def save_model (model: Union [VitEncoder, Decoder], model_path: Path) -> None:
-	try:
-		torch.save(model.state_dict(), model_path)
-		print (f'Model saved to {model_path}')
-	except Exception:
-		print (f'unable to save model {str (Exception)}')
-	return
-
 def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader, device: Device) -> float:
 	n_len = len (dataloader)
 	predictions = []
@@ -86,7 +78,7 @@ if __name__ == '__main__':
 						'--logs',
 						action='store_true',
 						help='print logs')
-	parser.add_argument('--config', type=str, required=True)
+	parser.add_argument('--config', type=str, default=None)
 	parser.add_argument('--batch_sz', type=int, default=1)
 	parser.add_argument('--strategy', type=str, default='greedy')
 	parser.add_argument('--beams', type=int, default=5)
@@ -94,7 +86,10 @@ if __name__ == '__main__':
 
 	args = parser.parse_args()
 
-	config = Config (args.config)
+	if args.config:
+		config = Config (args.config)
+	else:
+		config = Config ()
 
 	if torch.cuda.is_available():
 		print ('Cuda is available!')
