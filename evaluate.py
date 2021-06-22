@@ -1,7 +1,6 @@
 # Indic library
 from pathlib import Path
 from typing import Dict, Tuple, Union
-from typing_extensions import Required
 from torch.optim.optimizer import Optimizer
 from torch.types import Device
 
