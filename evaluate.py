@@ -54,10 +54,10 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				images_list = [image [i] for i in range (args.batch_sz)]
 
-				enc_last_hidden, enc_attentions = encoder (images_list)
+				enc_outputs = encoder (images_list)
 
 				start_id = torch.ones (args.batch_sz, 1, device=device)
-				dec_out = decoder.generate (input_ids=start_id, enc_last_hidden=enc_last_hidden, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
+				dec_out = decoder.generate (enc_outputs=enc_outputs, strategy=args.strategy, max_len=config.max_len, beams=args.beams)
 
 				print (type (dec_out))
 
