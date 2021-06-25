@@ -89,13 +89,11 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Training code')
-	parser.add_argument('-l',
-						'--logs',
-						action='store_true',
-						help='print logs')
-	parser.add_argument('--config', type=str, default=None)
+	parser.add_argument('-l', '--last', action='store_true',)						
+	parser.add_argument('--logs', action='store_true', help='print logs')
+	parser.add_argument('-c', '--config', type=str, default=None)
 	parser.add_argument('--batch_sz', type=int, default=1)
-	parser.add_argument('--strategy', type=str, default='greedy')
+	parser.add_argument('-s', '--strategy', type=str, default='greedy')
 	parser.add_argument('--beams', type=int, default=5)
 	parser.add_argument('--device', type=str, default='cpu')
 
@@ -141,11 +139,17 @@ if __name__ == '__main__':
 	test_dataset = HVGDataset (config.clean_test_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
 	test_dataloader = DataLoader (test_dataset, batch_size=args.batch_sz, shuffle=True)
 
-	# Encoder
-	encoder = VitEncoder (fe_path=config.fe_path, vit_path=config.enc_model_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
+		# Encoder
+	if args.last:
+		encoder = VitEncoder (fe_path=config.last_fe_path, vit_path=config.last_enc_model_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
+	else:
+		encoder = VitEncoder (fe_path=config.fe_path, vit_path=config.enc_model_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
 
 	# Decoder
-	decoder = Decoder (decoder_path=config.dec_model_path, out_attentions=False)
+	if args.last:
+		decoder = Decoder (decoder_path=config.last_dec_model_path, out_attentions=False)
+	else:
+		decoder = Decoder (decoder_path=config.dec_model_path, out_attentions=False)
 
 	encoder.to (device)
 	decoder.to (device)
