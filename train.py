@@ -166,9 +166,9 @@ if __name__ == '__main__':
 						'--logs',
 						action='store_true',
 						help='print logs')
-	parser.add_argument('--epochs', type=int, default=20)
+	parser.add_argument('--epochs', type=int, default=10)
 	parser.add_argument('--batch_sz', type=int, default=1)
-	parser.add_argument('--lr', type=float, default=1e-4)
+	parser.add_argument('--lr', type=float, default=1e-6)
 	parser.add_argument('--device', type=str, default='cpu')
 
 	args = parser.parse_args()

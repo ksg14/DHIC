@@ -3,6 +3,7 @@ todo.txt
 indic*
 data/images/
 out.txt
+results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
