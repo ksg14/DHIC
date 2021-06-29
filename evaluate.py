@@ -39,7 +39,7 @@ from utils.config import Config
 # import warnings
 # warnings.filterwarnings('ignore')
 
-smooth_fn = SmoothingFunction.method3
+smooth_fn = SmoothingFunction().method3
 
 def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader, device: Device) -> List:
 	n_len = len (dataloader)
