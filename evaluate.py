@@ -38,6 +38,8 @@ from utils.config import Config
 # import warnings
 # warnings.filterwarnings('ignore')
 
+
+
 def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer, encoder: VitEncoder, decoder: Decoder, dataloader: DataLoader, device: Device) -> List:
 	n_len = len (dataloader)
 	predictions = []
@@ -45,6 +47,8 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 	bleu_2 = 0
 	bleu_3 = 0
 	bleu_4 = 0
+
+	count = 0
 
 	encoder.eval ()
 	decoder.eval ()
@@ -77,7 +81,12 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 				bleu_2 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.5, 0.5, 0, 0))
 				bleu_3 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.33, 0.33, 0.33, 0))
 				bleu_4 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.25, 0.25, 0.25, 0.25))
+
+				count += 1
 				
+				if count == 10:
+					break
+
 				tepoch.set_postfix (bleu_1=(bleu_1 / n_len))
 				# break
 	bleu_1 /= n_len
@@ -162,7 +171,12 @@ if __name__ == '__main__':
 									dataloader=test_dataloader, \
 									device=device)
 	
-	with open (config.output_path / f'predictions_{args.strategy}.json', 'w') as file_io:
+	if args.last:
+		pred_out_name = f'last_predictions_{args.strategy}.json'
+	else:
+		pred_out_name = f'predictions_{args.strategy}.json'
+
+	with open (config.output_path / pred_out_name, 'w') as file_io:
 		json.dump (predictions, file_io)
 
 	print ('Done !')
