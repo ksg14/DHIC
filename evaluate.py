@@ -90,10 +90,10 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 
 				tepoch.set_postfix (bleu_1=(bleu_1 / n_len))
 				# break
-	bleu_1 /= n_len
-	bleu_2 /= n_len
-	bleu_3 /= n_len
-	bleu_4 /= n_len
+	bleu_1 /= count
+	bleu_2 /= count
+	bleu_3 /= count
+	bleu_4 /= count
 	print (f'Bleu_1 : {bleu_1}, Bleu_2 : {bleu_2}, Bleu_3 : {bleu_3}, Bleu_4 : {bleu_4}')
 	return predictions
 
