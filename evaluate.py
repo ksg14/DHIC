@@ -49,7 +49,7 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 	bleu_3 = 0
 	bleu_4 = 0
 
-	count = 0
+	# count = 0
 
 	encoder.eval ()
 	decoder.eval ()
@@ -83,17 +83,17 @@ def evaluate (args: argparse.Namespace, config: Config, tokenizer: BertTokenizer
 				bleu_3 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.33, 0.33, 0.33, 0), smoothing_function=smooth_fn)
 				bleu_4 += sentence_bleu ([gt_tokens], pred_tokens, weights=(0.25, 0.25, 0.25, 0.25), smoothing_function=smooth_fn)
 
-				count += 1
+				# count += 1
 				
-				if count == 10:
-					break
+				# if count == 10:
+				# 	break
 
 				tepoch.set_postfix (bleu_1=(bleu_1 / n_len))
 				# break
-	bleu_1 /= count
-	bleu_2 /= count
-	bleu_3 /= count
-	bleu_4 /= count
+	bleu_1 /= n_len
+	bleu_2 /= n_len
+	bleu_3 /= n_len
+	bleu_4 /= n_len
 	print (f'Bleu_1 : {bleu_1}, Bleu_2 : {bleu_2}, Bleu_3 : {bleu_3}, Bleu_4 : {bleu_4}')
 	return predictions
 
