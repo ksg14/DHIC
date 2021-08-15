@@ -48,7 +48,8 @@ def save_model (model: Union [VitEncoder, Decoder], model_path: Path) -> None:
 		print (f'unable to save model {str (Exception)}')
 	return
 
-def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, decoder: Decoder, val_dataloader: DataLoader, device: Device) -> float:
+def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, decoder: Decoder, 
+				val_dataloader: DataLoader, device: Device) -> float:
 	n_len = len (val_dataloader)
 	val_loss = 0.0
 
@@ -73,8 +74,11 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 		val_loss /= n_len
 	return val_loss
 
-def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decoder: Decoder, enc_optim: Optimizer, dec_optim: Optimizer, train_dataloader: DataLoader, val_dataloader: DataLoader, device: Device) -> Tuple [Dict, int]:
-	epoch_stats = { 'train' : {'loss' : []}, 'val' : {'loss' : [], 'bleu' : [], 'bleu_1' : [], 'bleu_2' : [], 'bleu_3' : [], 'bleu_4' : []} }
+def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decoder: Decoder, enc_optim: Optimizer, 
+			dec_optim: Optimizer, train_dataloader: DataLoader, val_dataloader: DataLoader, 
+			device: Device) -> Tuple [Dict, int]:
+	epoch_stats = { 'train' : {'loss' : []}, 'val' : {'loss' : [], 'bleu' : [], 'bleu_1' : [], 
+														'bleu_2' : [], 'bleu_3' : [], 'bleu_4' : []} }
 	n_len = len (train_dataloader)
 	best_epoch_loss = float ('inf')
 	best_epoch = -1
@@ -85,7 +89,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 	for epoch in range (args.epochs):
 		epoch_stats ['train']['loss'].append (0.0)
 		encoder.train ()
-		decoder.train ()
+		# decoder.train ()
 
 		with tqdm(train_dataloader) as tepoch:
 			for image, caption, target, target_seq_len in tepoch:

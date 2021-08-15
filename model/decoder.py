@@ -8,7 +8,7 @@ import torch
 
 class Decoder(Module):
 	def __init__(self, n_vocab: int, emb_dim: int, padding_idx: int, dropout_p: float, enc_dim: int,
-						n_head: int, n_layers:int, dim_ff: int, activation: str, depth: int, max_len: int, device: str):
+						n_head: int, n_layers: int, dim_ff: int, activation: str, depth: int, max_len: int, device: str):
 		super().__init__()
 		self.n_vocab = n_vocab
 		self.emb_dim = emb_dim 
