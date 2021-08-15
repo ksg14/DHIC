@@ -65,10 +65,8 @@ def validate (args: argparse.Namespace, config: Config, encoder: VitEncoder, dec
 				images_list = [image [i] for i in range (args.batch_sz)]
 
 				enc_outputs = encoder (images_list)
-
-				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_outputs.last_hidden_state)
-
-				val_loss += dec_loss.item ()
+				
+				# val_loss += dec_loss.item ()
 				
 				tepoch.set_postfix (val_loss=(val_loss / n_len))
 				# break
@@ -90,23 +88,21 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 		decoder.train ()
 
 		with tqdm(train_dataloader) as tepoch:
-			for _, _, image, caption, caption_mask, target, target_mask in tepoch:
+			for image, caption, target, target_seq_len in tepoch:
 				tepoch.set_description (f'Epoch {epoch}')
 
-				image, caption, caption_mask, target, target_mask = image, caption.to (device), caption_mask.to (device), target.to (device), target_mask.to (device)
+				image, caption, target, target_seq_len = image, caption.to (device), target.to (device), target_seq_len
 
 				enc_optim.zero_grad()
-				dec_optim.zero_grad()
+				# dec_optim.zero_grad()
 
 				if args.logs:
 					print (f'image shape - {image.shape}')
 					print (f'caption - {caption.shape}')
-					print (f'caption mask - {caption_mask.shape}')
 					print (f'target - {target.shape}')
-					print (f'target mask - {target_mask.shape}')
 					# print (f'target_seq_len shape- {target_seq_len.shape}')
-					# print (f'target_seq_len - {target_seq_len}')
-					# print (f'image[0].shape {image [0].shape}')
+					print (f'target_seq_len - {target_seq_len}')
+					print (f'image[0].shape {image [0].shape}')
 					print (f'max - {image.max ()}')
 					print (f'min - {image.min ()}')
 
@@ -122,11 +118,10 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 				if args.logs:
 					print (f'vit enc out - {enc_outputs.last_hidden_state.shape}')
 
-				dec_loss, dec_logits, dec_attentions = decoder (args.batch_sz, caption, caption_mask, target, enc_outputs.last_hidden_state)
-
-				dec_loss.backward()
+				break
+				# dec_loss.backward()
 				
-				enc_optim.step()
+				# enc_optim.step()
 				dec_optim.step()
 
 				with torch.no_grad():
@@ -134,7 +129,7 @@ def train (args: argparse.Namespace, config: Config, encoder: VitEncoder, decode
 				
 				tepoch.set_postfix (train_loss=epoch_stats ['train']['loss'] [-1])
 				# break
-		# break
+		break
 		
 		val_loss = validate (args=args, config=config, encoder=encoder, \
 								decoder=decoder, val_dataloader=val_dataloader, device=device)
@@ -184,53 +179,36 @@ if __name__ == '__main__':
 	text_transform = ToSequence (tokenizer=indic_tokenize.trivial_tokenize)
 	# image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224)), T.Normalize (config.img_mean, config.img_std)])
 	image_transform = T.Compose ([T.ToTensor(), T.Resize ((224, 224))])
-	tokenizer = BertTokenizer.from_pretrained(config.pretrained_tokenizer_path)
 
-	# print (f'padding side {tokenizer.padding_side}')
-	# print (f'bos tok {tokenizer.bos_token}')
-	# print (f'bos tok id {tokenizer.bos_token_id}')
-	# print (f'eos tok {tokenizer.eos_token}')
-	# print (f'eos tok id {tokenizer.eos_token_id}')
-	# print (f'pad tok {tokenizer.pad_token}')
-	# print (f'pad tok id {tokenizer.pad_token_id}')
-	# print (f'mask tok {tokenizer.mask_token}')
-	# print (f'vocab size {tokenizer.vocab_size}')
-	# print (f'0 -  {tokenizer.decode (0)}')
-	# print (f'1 -  {tokenizer.decode (1)}')
-	# print (f'2 -  {tokenizer.decode (2)}')
-	# print (f'3 -  {tokenizer.decode (3)}')
-	# print (f'4 -  {tokenizer.decode (4)}')
-	# print (f'5 -  {tokenizer.decode (5)}')
-	# print (f'6 -  {tokenizer.decode (6)}')
-	# print (f'7 -  {tokenizer.decode (7)}')
-	# print (f'80 -  {tokenizer.decode (80)}')
-	# tokenizer.bos_token = '[START]'
-	# tokenizer.eos_token = '[END]'
-
-	train_dataset = HVGDataset (config.clean_train_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
+	train_dataset = HVGDataset (config.clean_train_captions, config.word_to_index_path, config.index_to_word_path, 
+								config.images_path, config.max_len, text_transform=text_transform, 
+								tokenizer=indic_tokenize.trivial_tokenize, image_transform=image_transform)
 	train_dataloader = DataLoader (train_dataset, batch_size=args.batch_sz, shuffle=True)
 
-	val_dataset = HVGDataset (config.clean_val_captions, config.word_to_index_path, config.index_to_word_path, config.images_path, config.max_len, text_transform=None, tokenizer=indic_tokenize.trivial_tokenize, decoder_transform=tokenizer, image_transform=image_transform)
+	val_dataset = HVGDataset (config.clean_val_captions, config.word_to_index_path, config.index_to_word_path,
+	 							config.images_path, config.max_len, text_transform=text_transform, 
+								 tokenizer=indic_tokenize.trivial_tokenize, image_transform=image_transform)
 	val_dataloader = DataLoader (val_dataset, batch_size=args.batch_sz, shuffle=True)
 
 	# Encoder
-	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, device=device, out_attentions=False, do_resize=True, do_normalize=True)
+	encoder = VitEncoder (fe_path=config.pretrained_vitfe_path, vit_path=config.pretrained_vit_path, 
+							device=device, out_attentions=False, do_resize=True, do_normalize=True)
 
 	# Decoder
-	decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
+	# decoder = Decoder (decoder_path=config.pretrained_decoder_path, out_attentions=False)
 
 	encoder.to (device)
-	decoder.to (device)
+	# decoder.to (device)
 
 	enc_optim = Adam(encoder.parameters(), lr=args.lr)
-	dec_optim = Adam(decoder.parameters(), lr=args.lr)
+	# dec_optim = Adam(decoder.parameters(), lr=args.lr)
 
 	epoch_stats, best_epoch = train (args=args, \
 									config=config, \
 									encoder=encoder, \
-									decoder=decoder, \
+									decoder=None, \
 									enc_optim=enc_optim, \
-									dec_optim=dec_optim, \
+									dec_optim=None, \
 									train_dataloader=train_dataloader, \
 									val_dataloader=val_dataloader, \
 									device=device)
