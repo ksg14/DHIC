@@ -13,7 +13,9 @@ import numpy as np
 import json
 
 class HVGDataset (Dataset):
-	def __init__ (self, captions_file: Path, word_to_index_file: Path, index_to_word_file: Path, images_path: Path, max_len : int, text_transform: Callable=None, tokenizer: Callable=None, decoder_transform: Callable=None, image_transform: Callable=None) -> None:
+	def __init__ (self, captions_file: Path, word_to_index_file: Path, index_to_word_file: Path, images_path: Path, 
+					max_len : int, text_transform: Callable=None, tokenizer: Callable=None, 
+					image_transform: Callable=None) -> None:
 		with open (captions_file, 'r') as file_io:
 			self.captions = json.load (file_io)
 		
@@ -27,7 +29,6 @@ class HVGDataset (Dataset):
 		self.images_path = images_path
 		self.text_transform = text_transform
 		self.tokenizer = tokenizer
-		self.decoder_transform = decoder_transform
 		self.image_transform = image_transform
 
 	def __len__ (self) -> int:
@@ -43,42 +44,13 @@ class HVGDataset (Dataset):
 		if self.image_transform:
 			image = self.image_transform (image)
 
-		if self.decoder_transform:
-			if self.tokenizer:
-				caption_tok = self.tokenizer (caption_str)
-			else:
-				caption_tok = self.decoder_transform.tokenize (caption_str)
-
-			tmp_caption = self.decoder_transform (caption_tok, is_split_into_words=True, return_tensors='pt')
-			tok_len = tmp_caption.input_ids.shape [1]
-
-			caption = self.decoder_transform (caption_tok, is_split_into_words=True, max_length=self.max_len, padding='max_length', return_attention_mask=True, return_tensors='pt')
-
-			# print (f'ids - {caption.input_ids.shape} - {caption.input_ids}')
-			# print (f'mask - {caption.attention_mask.shape} -  {caption.attention_mask}')
-
-			caption_src = torch.cat ([caption.input_ids [:, :tok_len-1], caption.input_ids [:, tok_len:]], dim=1)
-			caption_src_mask = torch.cat ([caption.attention_mask [:, :tok_len-1], caption.attention_mask [:, tok_len:]], dim=1)
-
-			# print (f'src ids - {caption_src.shape} - {caption_src}')
-			# print (f'src mask - {caption_src_mask.shape} {caption_src_mask}')
-
-			caption_tgt = caption.input_ids [:, 1:]
-			caption_tgt_mask = caption.attention_mask [:, 1:]
-			
-			# print (f'tgt ids - {caption_tgt.shape} - {caption_tgt}')
-			# print (f'tgt mask - {caption_tgt_mask.shape} - {caption_tgt_mask}')
-
-			return image_id, caption_str, image, caption_src, caption_src_mask, caption_tgt, caption_tgt_mask	
-
-		if self.text_transform:
-			caption = self.text_transform (f"start {caption_str}", self.word_to_index)
-			target = self.text_transform (f"{caption_str} end", self.word_to_index)
-			target_seq_len = target.shape [0]
-			caption = F.pad (caption, pad=(0, self.max_len-target_seq_len))
-			target = F.pad (target, pad=(0, self.max_len-target_seq_len))
+		caption = self.text_transform (f"start {caption_str}", self.word_to_index)
+		target = self.text_transform (f"{caption_str} end", self.word_to_index)
+		target_seq_len = target.shape [0]
+		# caption = F.pad (caption, pad=(0, self.max_len-target_seq_len))
+		# target = F.pad (target, pad=(0, self.max_len-target_seq_len))
 		
-			return image, caption, target, target_seq_len
+		return image, caption, target, target_seq_len
 
 # if __name__ == '__main__':
 #	 train_dataset = HVGDataset ()

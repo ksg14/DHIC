@@ -15,7 +15,8 @@ class VitEncoder(Module):
 		self.do_normalize = do_normalize
 		self.device = device
 
-		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path, do_resize=self.do_resize, do_normalize=self.do_normalize)
+		self.feature_extractor = ViTFeatureExtractor.from_pretrained(fe_path, do_resize=self.do_resize, 
+																		do_normalize=self.do_normalize)
 		
 		# print (f'fe img mean - {self.feature_extractor.image_mean}')
 		# print (f'fe img std - {self.feature_extractor.image_std}')
